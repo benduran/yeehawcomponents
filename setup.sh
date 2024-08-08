@@ -6,4 +6,4 @@ else
   npm i
 fi
 
-npx husky
+npx husky install

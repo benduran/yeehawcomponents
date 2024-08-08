@@ -11,7 +11,8 @@
     "docs": "vite",
     "lint": "turbo-tools run lint",
     "lint:fix": "turbo-tools run lint:fix",
-    "test": "turbo-tools run test"
+    "test": "turbo-tools run test",
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",
