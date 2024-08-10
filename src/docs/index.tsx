@@ -1,20 +1,15 @@
-import React from 'react';
+import './css/docs.css';
+
+import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
 
-import { ConversationPit } from '../components/index.js';
+import { DocsRouter } from './routes.js';
 
 const elem = document.getElementById('root')!;
 
 const root = ReactDOM.createRoot(elem);
 root.render(
-  <div>
-    <ConversationPit
-      messages={[
-        {
-          id: 'some-id',
-          message: 'boop boop',
-        },
-      ]}
-    />
-  </div>,
+  <StrictMode>
+    <DocsRouter />
+  </StrictMode>,
 );

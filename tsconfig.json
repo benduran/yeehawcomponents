@@ -5,12 +5,12 @@
       "ESNext",
       "DOM"
     ],
-    "module": "NodeNext",
-    "moduleResolution": "nodenext",
+    "module": "ES2022",
+    "moduleResolution": "Bundler",
     "allowJs": true,
     "checkJs": true,
     "declaration": true,
-    "jsx": "react",
+    "jsx": "react-jsx",
     "outDir": "./dist",
     "rootDir": "./src",
     "importsNotUsedAsValues": "remove",
@@ -30,7 +30,8 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedIndexedAccess": true,
     "skipDefaultLibCheck": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "plugins": [{ "name": "typescript-plugin-css-modules" }]
   },
   "include": ["src/"]
 }
