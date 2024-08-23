@@ -1,2 +1,1 @@
 export * from './ComponentDoc';
-export * from './DocsNav';

@@ -8,3 +8,14 @@
     padding: 1rem;
   }
 }
+
+.docsContent {
+  display: grid;
+  flex-grow: 1;
+  grid-template-columns: max-content 1fr;
+  gap: 1rem;
+
+  & > article {
+    padding: 1rem;
+  }
+}

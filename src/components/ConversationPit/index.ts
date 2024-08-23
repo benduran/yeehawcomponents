@@ -1,1 +1,2 @@
-export * from './ConversationPit.js';
+export * from './ConversationPit';
+export * from './types';
