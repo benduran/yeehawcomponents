@@ -1,2 +1,2 @@
-export * as colors from './colors';
-export * as heights from './heights';
+export * from './colors';
+export * from './heights';

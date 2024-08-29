@@ -1,1 +1,3 @@
-export const HEIGHT_AVATAR = '3em';
+export const heights = {
+  HEIGHT_AVATAR: '3em',
+};

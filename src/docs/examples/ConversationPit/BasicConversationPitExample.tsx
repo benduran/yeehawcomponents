@@ -5,8 +5,7 @@ import { ConversationPit, ConversationPitMessage } from '../../../components';
 const messages: ConversationPitMessage[] = [
   {
     author: {
-      avatarUrl:
-        'https://static.wikia.nocookie.net/batmantheanimatedseries/images/b/b1/PP_20_-_Your_crazy_friend.jpg/revision/latest?cb=20210328110721',
+      avatarUrl: 'https://qph.cf2.quoracdn.net/main-qimg-4b39440acdf8db23f0b7a64dc8fc9820',
       email: 'bruce@wayneenterprises.com',
       fullName: 'Bruce Wayne',
     },

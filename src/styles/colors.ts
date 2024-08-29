@@ -1,2 +1,4 @@
-export const COLOR_WHITE = '#fff';
-export const COLOR_GRAY = '#ccc';
+export const colors = {
+  COLOR_WHITE: '#fff',
+  COLOR_GRAY: '#ccc',
+};

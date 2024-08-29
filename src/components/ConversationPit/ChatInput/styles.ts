@@ -21,8 +21,7 @@ export const styles = {
    * that contains the <textarea /> and its control buttons
    */
   root: css`
-    border-top: 1px solid ${colors.COLOR_GRAY};
-    padding: 0.5em 0;
+    padding: 0;
     position: relative;
   `,
 };
