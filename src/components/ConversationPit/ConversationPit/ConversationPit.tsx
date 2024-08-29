@@ -9,9 +9,9 @@ import { styles } from './styles';
 
 const displayName = 'ConversationPit';
 export const ConversationPit = React.forwardRef<HTMLDivElement, ConversationPitProps>(
-  ({ className, classes, messages, ...rest }, ref) => {
+  ({ className, classes, currentUser, onSend, messages, ...rest }, ref) => {
     return (
-      <ConversationPitContext classes={classes} messages={messages}>
+      <ConversationPitContext classes={classes} currentUser={currentUser} messages={messages} onSend={onSend}>
         <div {...rest} className={cx(styles.root, displayName, className, classes?.root)} ref={ref}>
           <MessagesList messages={messages} />
           <ChatInput main />

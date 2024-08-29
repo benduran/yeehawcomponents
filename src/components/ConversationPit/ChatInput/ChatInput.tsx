@@ -1,5 +1,6 @@
-import { ChangeEvent, useCallback, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useCallback, useState } from 'react';
 
+import { useEventCallback } from '../../../hooks';
 import { cx } from '../../../util';
 import { ChatInputButtons } from '../ChatInputButtons';
 import { useConversationPitContext } from '../Context';
@@ -11,7 +12,7 @@ import { styles } from './styles';
  */
 export function ChatInput({ main, message }: ChatInputProps) {
   /** context */
-  const { classes, getChatInputPlaceholder } = useConversationPitContext();
+  const { classes, currentUser, getChatInputPlaceholder, onSend } = useConversationPitContext();
 
   /** state */
   const [text, setText] = useState(message?.message || '');
@@ -21,6 +22,14 @@ export function ChatInput({ main, message }: ChatInputProps) {
     (e: ChangeEvent<HTMLTextAreaElement>) => setText(e.currentTarget.value),
     [],
   );
+  const handleSend = useEventCallback(() => {
+    // TODO: get the mentions from someplace?
+    onSend(currentUser, text, []);
+    setText('');
+  });
+  const handleSendOnKeydown = useEventCallback((e: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && e.metaKey) handleSend();
+  });
 
   /** local variables */
   const placeholder =
@@ -31,10 +40,11 @@ export function ChatInput({ main, message }: ChatInputProps) {
       <textarea
         className={cx(styles.textarea, classes?.textarea)}
         onChange={handleChatInputChange}
+        onKeyDown={handleSendOnKeydown}
         placeholder={placeholder}
         value={text}
       />
-      <ChatInputButtons onSend={() => {}} />
+      <ChatInputButtons onSend={handleSend} />
     </div>
   );
 }

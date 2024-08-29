@@ -132,6 +132,10 @@ export interface ConversationPitContextProps {
    */
   classes?: Partial<ConversationPitClasses>;
   /**
+   * The current user persona that is chatting with folks
+   */
+  currentUser: ConversationPitUser;
+  /**
    * Called on each <ChatInput /> render to determine the placeholder
    * message to show to a user.
    * If no function is provided, a default message will be displayed instead
@@ -141,6 +145,12 @@ export interface ConversationPitContextProps {
    * Array of messages to display in the component
    */
   messages: ConversationPitMessage[];
+
+  /**
+   * callback fired when a user presses enter or the send button,
+   * after they've typed a message
+   */
+  onSend: (sendingUser: ConversationPitUser, message: string, mentions: string[]) => void;
 }
 
 export type ConversationPitProps = ConversationPitContextProps &
