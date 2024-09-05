@@ -2,7 +2,7 @@ import type { FC } from 'react';
 import { Route, Switch } from 'wouter';
 
 import { ComponentDoc } from './components';
-import { BasicConversationPitExample } from './examples';
+import { BasicConversationPitExample, BasicConversationPitExampleSnippet } from './examples';
 import { DocsLayout } from './layouts';
 import { docsRoutes } from './routes';
 
@@ -14,6 +14,7 @@ export const DocsRouter: FC = () => (
           componentName='Conversation Pit'
           examples={[
             <ComponentDoc.ComponentExample
+              code={BasicConversationPitExampleSnippet}
               description='Conversation Pit in its simplest form, for basic, threaded chat.'
               key='basic-example'
               name='Basic example'

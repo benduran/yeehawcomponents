@@ -18,7 +18,7 @@ export function ChatInputButtons({ onSend }: ChatInputButtonsProps) {
 
   return (
     <div className={rootClassname}>
-      <button className={buttonClassName} type='button'>
+      <button className={buttonClassName} onClick={onSend} type='button'>
         <IoSendOutline />
       </button>
       <button className={buttonClassName} type='button'>
