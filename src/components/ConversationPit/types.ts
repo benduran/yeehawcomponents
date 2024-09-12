@@ -135,22 +135,39 @@ export interface ConversationPitContextProps {
    * The current user persona that is chatting with folks
    */
   currentUser: ConversationPitUser;
+
   /**
    * Called on each <ChatInput /> render to determine the placeholder
    * message to show to a user.
    * If no function is provided, a default message will be displayed instead
    */
   getChatInputPlaceholder?: (main: boolean, message?: ConversationPitMessage) => string;
+
+  /**
+   * Opens the text reply box for a given message
+   */
+  handleOpenReply: (parentMessage: ConversationPitMessage) => void;
+
   /**
    * Array of messages to display in the component
    */
   messages: ConversationPitMessage[];
 
   /**
+   * The ID of the message that currently has its reply controls opened
+   */
+  openedReplyMessageId: string;
+
+  /**
    * callback fired when a user presses enter or the send button,
    * after they've typed a message
    */
-  onSend: (sendingUser: ConversationPitUser, message: string, mentions: string[]) => void;
+  onSend: (
+    sendingUser: ConversationPitUser,
+    message: string,
+    mentions: string[],
+    parentMessage?: ConversationPitMessage,
+  ) => void;
 }
 
 export type ConversationPitProps = ConversationPitContextProps &

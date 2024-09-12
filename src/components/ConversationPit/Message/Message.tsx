@@ -1,5 +1,6 @@
 import { cx } from '../../../util';
 import { useConversationPitContext } from '../Context';
+import { MessageActionButtons } from '../MessageActionButtons/MessageActionButton';
 import { MessageProps } from '../types';
 import { UserAvatar } from '../UserAvatar';
 import { styles } from './styles';
@@ -10,7 +11,7 @@ const messageTextDisplayName = 'MessageText';
 
 export function Message({ message }: MessageProps) {
   /** context */
-  const { classes } = useConversationPitContext();
+  const { classes, currentUser } = useConversationPitContext();
 
   /** styles */
   const rootClassName = cx(styles.root, classes?.message, displayName);
@@ -24,6 +25,7 @@ export function Message({ message }: MessageProps) {
         <div>{message.author.fullName}</div>
       </div>
       <div className={messageTextClassName}>{message.message}</div>
+      {message.author.email !== currentUser.email && <MessageActionButtons parentMessage={message} />}
     </li>
   );
 }

@@ -45,10 +45,7 @@ export function UserAvatar({ user }: UserAvatarProps) {
           alt={`${user.fullName}'s Avatar`}
           className={cx(styles.image)}
           onError={() => setImageLoading('error')}
-          onLoad={e => {
-            console.info(e);
-            setImageLoading('loaded');
-          }}
+          onLoad={() => setImageLoading('loaded')}
           src={user.avatarUrl}
         />
       )}

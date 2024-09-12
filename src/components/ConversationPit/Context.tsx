@@ -1,11 +1,33 @@
-import { createContext, ReactNode, useContext } from 'react';
+import { createContext, PropsWithChildren, useCallback, useContext, useMemo, useState } from 'react';
 
-import { ConversationPitContextProps } from './types';
+import { ConversationPitContextProps, ConversationPitMessage } from './types';
 
 const context = createContext<ConversationPitContextProps | null>(null);
 
-export function ConversationPitContext({ children, ...props }: ConversationPitContextProps & { children: ReactNode }) {
-  return <context.Provider value={props}>{children}</context.Provider>;
+export function ConversationPitContext({
+  children,
+  ...props
+}: Omit<ConversationPitContextProps, 'handleOpenReply' | 'openedReplyMessageId'> & PropsWithChildren) {
+  /** state */
+  const [openedReplyMessageId, setOpenedReplyMessageId] = useState('');
+
+  /** callbacks */
+  const handleOpenReply = useCallback(
+    (parentMessage: ConversationPitMessage) => setOpenedReplyMessageId(parentMessage.id),
+    [],
+  );
+
+  /** memos */
+  const providerVal = useMemo(
+    (): ConversationPitContextProps => ({
+      ...props,
+      handleOpenReply,
+      openedReplyMessageId,
+    }),
+    [handleOpenReply, openedReplyMessageId],
+  );
+
+  return <context.Provider value={providerVal}>{children}</context.Provider>;
 }
 
 export function useConversationPitContext() {

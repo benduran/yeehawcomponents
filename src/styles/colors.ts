@@ -1,4 +1,5 @@
 export const colors = {
-  COLOR_WHITE: '#fff',
+  COLOR_BLUE: '#3311dd',
   COLOR_GRAY: '#ccc',
+  COLOR_WHITE: '#fff',
 };
