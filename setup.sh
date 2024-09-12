@@ -6,4 +6,4 @@ else
   npm i
 fi
 
-npx husky install
+cp ./commit-msg ./.git/hooks
