@@ -7,11 +7,11 @@
   "types": "./dist/index.d.ts",
   "typings": "./dist/index.d.ts",
   "scripts": {
-    "build": "turbo-tools run build",
+    "build": "vite build",
     "docs": "vite",
-    "lint": "turbo-tools run lint",
-    "lint:fix": "turbo-tools run lint:fix",
-    "test": "turbo-tools run test"
+    "lint": "eslint --no-error-on-unmatched-pattern './src/**/*.{tsx,ts,jsx,js,mjs}'",
+    "lint:fix": "bun run lint --fix",
+    "test": "vitest run"
   },
   "repository": {
     "type": "git",
