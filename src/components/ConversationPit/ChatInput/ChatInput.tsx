@@ -10,7 +10,7 @@ import { styles } from './styles';
 /**
  * Textbox a user can interact with and type their message
  */
-export function ChatInput({ main, message }: ChatInputProps) {
+export function ChatInput({ className, main, message }: ChatInputProps) {
   /** context */
   const { classes, currentUser, getChatInputPlaceholder, onSend } = useConversationPitContext();
 
@@ -36,7 +36,7 @@ export function ChatInput({ main, message }: ChatInputProps) {
     getChatInputPlaceholder?.(main, message) || main ? 'Type your message here...' : 'Type your reply here...';
 
   return (
-    <div className={cx(styles.root, classes?.chatInput, main && classes?.mainChatInput)}>
+    <div className={cx(styles.root, classes?.chatInput, main && classes?.mainChatInput, className)}>
       <textarea
         className={cx(styles.textarea, classes?.textarea)}
         onChange={handleChatInputChange}

@@ -9,22 +9,31 @@ export interface MessageActionButtonsProps {
 
 export function MessageActionButtons({ parentMessage }: MessageActionButtonsProps) {
   /** context */
-  const { handleOpenReply } = useConversationPitContext();
+  const { allowDeletion, allowEdit, currentUser, handleOpenReply } = useConversationPitContext();
 
   /** styles */
   const rootClassName = cx(styles.root);
 
+  /** local variables */
+  const authorIsCurrentUser = parentMessage.author.email === currentUser.email;
+
   return (
     <div className={rootClassName}>
-      <button onClick={() => console.info('handle delete')} type='button'>
-        Delete
-      </button>
-      <button onClick={() => console.info('handle edit')} type='button'>
-        Edit
-      </button>
-      <button onClick={() => handleOpenReply(parentMessage)} type='button'>
-        Reply
-      </button>
+      {allowDeletion && authorIsCurrentUser && (
+        <button onClick={() => console.info('handle delete')} type='button'>
+          Delete
+        </button>
+      )}
+      {allowEdit && authorIsCurrentUser && (
+        <button onClick={() => console.info('handle edit')} type='button'>
+          Edit
+        </button>
+      )}
+      {!authorIsCurrentUser && (
+        <button onClick={() => handleOpenReply(parentMessage)} type='button'>
+          Reply
+        </button>
+      )}
     </div>
   );
 }

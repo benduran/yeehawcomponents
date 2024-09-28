@@ -24,25 +24,40 @@ export interface ConversationPitMessage {
    * Person that authored this particular message
    */
   author: ConversationPitUser;
+
+  /**
+   * The date the message was created on your server
+   */
+  createDate: Date;
+
   /**
    * Unique ID for this thread
    */
   id: string;
+
   /**
    * Collection of text blobs that map to
    * email addresses or other form of contacting
    * a person
    */
   mentions?: Record<string, string>;
+
   /**
    * Contents of the message
    */
   message: string;
+
   /**
    * If this is set, this chat will become
    * nested under the parent in a thread-like manner
    */
   parentId?: string;
+
+  /**
+   * If a user edits this message, this is the date the update
+   * occurred.
+   */
+  updatedDate?: Date;
 }
 
 export interface MessagesListProps {
@@ -89,9 +104,17 @@ export interface ConversationPitClasses {
    */
   childMessagesList: string;
   /**
+   * Class name applied to the nested reply text box
+   */
+  replyChatInput: string;
+  /**
    * Class name applied to the main chat box that is persistent and always visible
    */
   mainChatInput: string;
+  /**
+   * Class name applied to the <div /> that wraps around the message reply, edit and deletion action buttons
+   */
+  messageActions: string;
   /**
    * Class name applied to the <div /> that holds a chat
    * message's author name and send time
@@ -127,6 +150,22 @@ export interface ConversationPitClasses {
 }
 
 export interface ConversationPitContextProps {
+  /**
+   * Whether or not a user should be able to delete messages
+   * they've posted
+   *
+   * @default false
+   */
+  allowDeletion?: boolean;
+
+  /**
+   * Whether or not a user should be able to edit messages
+   * they've posted
+   *
+   * @default false
+   */
+  allowEdit?: boolean;
+
   /**
    * CSS classes to provide to style Conversation Pit
    */
@@ -174,6 +213,10 @@ export type ConversationPitProps = ConversationPitContextProps &
   React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
 
 export interface ChatInputProps {
+  /**
+   * CSS class name override
+   */
+  className?: string;
   /**
    * If set, sets this content as the initial
    * content available for the user to edit
