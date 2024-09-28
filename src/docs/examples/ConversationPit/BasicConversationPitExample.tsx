@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { useState } from 'react';
 
 import { ConversationPit, ConversationPitMessage, ConversationPitUser } from '../../../components';
@@ -18,6 +19,7 @@ export function BasicConversationPitExample() {
         email: 'bruce@wayneenterprises.com',
         fullName: 'Bruce Wayne',
       },
+      createDate: dayjs().subtract(1, 'day').toDate(),
       id: '1',
       message: 'Hey there! How are you doing?',
     },
@@ -32,6 +34,7 @@ export function BasicConversationPitExample() {
           ...prev,
           {
             author: user,
+            createDate: new Date(),
             id: performance.now().toString(),
             message,
           },
