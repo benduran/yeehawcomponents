@@ -1,6 +1,6 @@
-import { useMakeCx } from '../../../hooks';
-import { useConversationPitContext } from '../Context';
-import { ChatInputButtonsProps } from '../types';
+import { useMakeCx } from '../../../../hooks';
+import { useConversationPitContext } from '../../../context';
+import { ChatInputButtonsProps } from '../../../types';
 import { styles } from './styles';
 
 const displayName = 'ChatInputButtons';

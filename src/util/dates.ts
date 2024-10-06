@@ -5,12 +5,12 @@ import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);
 dayjs.extend(relative);
 
-export const Date = {
+export const Dates = {
   /**
    * Given a date string, retruns how far in the past it occurred
    */
   relativeFromNow(dateStr: string | Date) {
-    const d = Date.fromString(dateStr);
+    const d = Dates.fromString(dateStr);
     return d.fromNow();
   },
 

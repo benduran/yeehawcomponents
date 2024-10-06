@@ -1,7 +1,7 @@
-import { useMakeCx } from '../../../hooks';
-import { useConversationPitContext } from '../Context';
+import { useMakeCx } from '../../../../hooks';
+import { useConversationPitContext } from '../../../context';
+import { MessagesListProps } from '../../../types';
 import { Message } from '../Message';
-import { MessagesListProps } from '../types';
 import { styles } from './styles';
 
 const displayName = 'MessagesList';

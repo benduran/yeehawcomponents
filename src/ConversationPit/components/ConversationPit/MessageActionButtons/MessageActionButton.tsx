@@ -1,7 +1,7 @@
-import { useMakeCx } from '../../../hooks';
-import { useConversationPitContext } from '../Context';
-import { ConversationPitMessage } from '../types';
-import { styles } from './styles';
+import { useMakeCx } from '../../../../hooks';
+import { useConversationPitContext } from '../../../context';
+import { ConversationPitMessage } from '../../../types';
+import { styles } from '../ConversationPit';
 
 export interface MessageActionButtonsProps {
   parentMessage: ConversationPitMessage;

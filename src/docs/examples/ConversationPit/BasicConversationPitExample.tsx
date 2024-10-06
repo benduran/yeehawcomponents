@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { useState } from 'react';
 
-import { ConversationPit, ConversationPitMessage, ConversationPitUser } from '../../../components';
+import { ConversationPit, ConversationPitMessage, ConversationPitUser } from '../../../ConversationPit';
 
 /* ---FENCE--- */
 
@@ -25,11 +25,13 @@ export function BasicConversationPitExample() {
     },
   ]);
 
+  console.info(messages);
+
   return (
     <ConversationPit
       currentUser={currentUser}
       messages={messages}
-      onSend={(user, message) =>
+      onSend={(user, message, mentions, parentMessage) =>
         setMessages(prev => [
           ...prev,
           {
@@ -37,6 +39,7 @@ export function BasicConversationPitExample() {
             createDate: new Date(),
             id: performance.now().toString(),
             message,
+            parentId: parentMessage?.id,
           },
         ])
       }

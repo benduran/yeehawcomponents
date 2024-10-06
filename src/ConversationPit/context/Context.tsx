@@ -1,6 +1,6 @@
 import { createContext, PropsWithChildren, useCallback, useContext, useMemo, useState } from 'react';
 
-import { ConversationPitContextProps, ConversationPitMessage } from './types';
+import { ConversationPitContextProps, ConversationPitMessage } from '../types';
 
 const context = createContext<ConversationPitContextProps | null>(null);
 

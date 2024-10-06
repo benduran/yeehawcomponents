@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 /**
  * Creates a stable callback that needs no
@@ -9,7 +9,10 @@ import { useCallback, useRef } from 'react';
  */
 export function useEventCallback<T extends Function>(callback: T) {
   const callbackRef = useRef(callback);
-  callbackRef.current = callback;
+
+  useEffect(() => {
+    callbackRef.current = callback;
+  });
 
   // @ts-expect-error - Silence! We don't really care about the typing too much
   return useCallback<T>((...args) => callbackRef.current(...args), []);

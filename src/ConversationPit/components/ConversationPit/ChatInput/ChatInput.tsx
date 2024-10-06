@@ -1,15 +1,15 @@
 import { ChangeEvent, KeyboardEvent, useCallback, useState } from 'react';
 
-import { useEventCallback, useMakeCx } from '../../../hooks';
+import { useEventCallback, useMakeCx } from '../../../../hooks';
+import { useConversationPitContext } from '../../../context';
+import type { ChatInputProps } from '../../../types';
 import { ChatInputButtons } from '../ChatInputButtons';
-import { useConversationPitContext } from '../Context';
-import type { ChatInputProps } from '../types';
 import { styles } from './styles';
 
 /**
  * Textbox a user can interact with and type their message
  */
-export function ChatInput({ className, main, message }: ChatInputProps) {
+export function ChatInput({ className, main, message, parentMessage }: ChatInputProps) {
   /** context */
   const { classes, currentUser, getChatInputPlaceholder, handleCloseReply, onSend } = useConversationPitContext();
 
@@ -26,7 +26,7 @@ export function ChatInput({ className, main, message }: ChatInputProps) {
   );
   const handleSend = useEventCallback(() => {
     // TODO: get the mentions from someplace?
-    onSend(currentUser, text, []);
+    onSend(currentUser, text, [], parentMessage);
     setText('');
     handleCloseReply();
   });

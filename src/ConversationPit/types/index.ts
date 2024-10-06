@@ -1,3 +1,5 @@
+import { Nullish } from '../../types';
+
 export interface ConversationPitUser {
   /**
    * If present, will attempt to fetch a valid image file
@@ -215,7 +217,7 @@ export interface ConversationPitContextProps {
     sendingUser: ConversationPitUser,
     message: string,
     mentions: string[],
-    parentMessage?: ConversationPitMessage,
+    parentMessage: Nullish<ConversationPitMessage>,
   ) => void;
 }
 
@@ -244,6 +246,12 @@ export interface ChatInputProps {
    * box that appears at the very bottom of the widget
    */
   main: boolean;
+
+  /**
+   * If set, this means this message
+   * belongs to a thread
+   */
+  parentMessage: Nullish<ConversationPitMessage>;
 }
 
 export interface ChatInputButtonsProps {

@@ -1,9 +1,9 @@
-import { useMakeCx } from '../../../hooks';
-import { Date } from '../../../util/dates';
+import { useMakeCx } from '../../../../hooks';
+import { Dates } from '../../../../util';
+import { useConversationPitContext } from '../../../context';
+import { MessageProps } from '../../../types';
 import { ChatInput } from '../ChatInput';
-import { useConversationPitContext } from '../Context';
-import { MessageActionButtons } from '../MessageActionButtons/MessageActionButton';
-import { MessageProps } from '../types';
+import { MessageActionButtons } from '../MessageActionButtons';
 import { UserAvatar } from '../UserAvatar';
 import { styles } from './styles';
 
@@ -43,12 +43,12 @@ export function Message({ message }: MessageProps) {
       <div className={messageTextClassName}>{message.message}</div>
       <div className={messageActionsClassName}>
         <div className={messageDateClassName}>
-          {Date.relativeFromNow(message.updatedDate ?? message.createDate)}
+          {Dates.relativeFromNow(message.updatedDate ?? message.createDate)}
           {!isReplyOpened && isSomeActionAllowed && <div>•</div>}
         </div>
         <MessageActionButtons parentMessage={message} />
       </div>
-      {isReplyOpened && <ChatInput className={replyChatInputClassName} main={false} />}
+      {isReplyOpened && <ChatInput className={replyChatInputClassName} main={false} parentMessage={message} />}
     </li>
   );
 }

@@ -1,6 +1,6 @@
 import { css } from '@emotion/css';
 
-import { borders, colors } from '../../../styles';
+import { borders, colors } from '../../../../styles';
 
 export const styles = {
   /**

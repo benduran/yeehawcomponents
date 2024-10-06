@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 
-import { useMakeCx } from '../../../hooks';
-import { useConversationPitContext } from '../Context';
-import { UserAvatarProps } from '../types';
+import { useMakeCx } from '../../../../hooks';
+import { useConversationPitContext } from '../../../context';
+import { UserAvatarProps } from '../../../types';
 import { styles } from './styles';
 
 const displayName = 'ChatAvatar';
