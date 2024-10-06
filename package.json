@@ -8,7 +8,7 @@
   "typings": "./dist/index.d.ts",
   "scripts": {
     "build": "vite build",
-    "docs": "vite & tsc --watch --noEmit",
+    "docs": "vite",
     "lint": "eslint --no-error-on-unmatched-pattern './src/**/*.{tsx,ts,jsx,js,mjs}'",
     "lint:fix": "bun run lint --fix",
     "test": "vitest run"

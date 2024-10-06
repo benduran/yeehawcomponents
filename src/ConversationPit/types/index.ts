@@ -254,6 +254,6 @@ export interface ChatInputProps {
   parentMessage: Nullish<ConversationPitMessage>;
 }
 
-export interface ChatInputButtonsProps {
+export interface ChatInputButtonsProps extends Pick<ChatInputProps, 'main'> {
   onSend: () => void;
 }

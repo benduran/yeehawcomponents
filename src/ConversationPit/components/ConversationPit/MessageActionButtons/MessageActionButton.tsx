@@ -1,13 +1,13 @@
 import { useMakeCx } from '../../../../hooks';
 import { useConversationPitContext } from '../../../context';
 import { ConversationPitMessage } from '../../../types';
-import { styles } from '../ConversationPit';
+import { styles } from './styles';
 
 export interface MessageActionButtonsProps {
-  parentMessage: ConversationPitMessage;
+  message: ConversationPitMessage;
 }
 
-export function MessageActionButtons({ parentMessage }: MessageActionButtonsProps) {
+export function MessageActionButtons({ message }: MessageActionButtonsProps) {
   /** context */
   const { allowDeletion, allowEdit, currentUser, handleOpenReply, openedReplyMessageId } = useConversationPitContext();
 
@@ -18,8 +18,9 @@ export function MessageActionButtons({ parentMessage }: MessageActionButtonsProp
   const rootClassName = cx(styles.root);
 
   /** local variables */
-  const authorIsCurrentUser = parentMessage.author.email === currentUser.email;
-  const thisHasReplyOpen = parentMessage.id === openedReplyMessageId;
+  const authorIsCurrentUser = message.author.email === currentUser.email;
+
+  const thisHasReplyOpen = message.id === openedReplyMessageId;
 
   if (thisHasReplyOpen) return null;
 
@@ -36,7 +37,7 @@ export function MessageActionButtons({ parentMessage }: MessageActionButtonsProp
         </button>
       )}
       {!authorIsCurrentUser && (
-        <button onClick={() => handleOpenReply(parentMessage)} type='button'>
+        <button onClick={() => handleOpenReply(message)} type='button'>
           Reply
         </button>
       )}

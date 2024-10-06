@@ -3,7 +3,6 @@ import { ChangeEvent, KeyboardEvent, useCallback, useState } from 'react';
 import { useEventCallback, useMakeCx } from '../../../../hooks';
 import { useConversationPitContext } from '../../../context';
 import type { ChatInputProps } from '../../../types';
-import { ChatInputButtons } from '../ChatInputButtons';
 import { styles } from './styles';
 
 /**
@@ -15,9 +14,16 @@ export function ChatInput({ className, main, message, parentMessage }: ChatInput
 
   /** hooks */
   const cx = useMakeCx('ConversationPit', 'ChatInput');
+  const buttonsCx = useMakeCx('ConversationPit', 'ChatButtons');
+  const buttonCx = useMakeCx('ConversationPit', 'Button');
 
   /** state */
   const [text, setText] = useState(message?.message || '');
+
+  /** styles */
+  const rootClassName = cx(styles.root, classes?.chatInput, main && classes?.mainChatInput, className);
+  const chatInputButtonsClassName = buttonsCx(styles.chatInputButtons, classes?.chatInputButtons);
+  const buttonClassName = buttonCx(styles.button, classes?.chatInputButton, '');
 
   /** callbacks */
   const handleChatInputChange = useCallback(
@@ -30,6 +36,10 @@ export function ChatInput({ className, main, message, parentMessage }: ChatInput
     setText('');
     handleCloseReply();
   });
+  const handleCancel = useEventCallback(() => {
+    setText('');
+    handleCloseReply();
+  });
   const handleSendOnKeydown = useEventCallback((e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && e.metaKey) handleSend();
   });
@@ -39,7 +49,7 @@ export function ChatInput({ className, main, message, parentMessage }: ChatInput
     getChatInputPlaceholder?.(main, message) || main ? 'Type your message here...' : 'Type your reply here...';
 
   return (
-    <div className={cx(styles.root, classes?.chatInput, main && classes?.mainChatInput, className)}>
+    <div className={rootClassName}>
       <textarea
         className={cx(styles.textarea, classes?.textarea)}
         onChange={handleChatInputChange}
@@ -47,7 +57,18 @@ export function ChatInput({ className, main, message, parentMessage }: ChatInput
         placeholder={placeholder}
         value={text}
       />
-      <ChatInputButtons onSend={handleSend} />
+      <div className={chatInputButtonsClassName}>
+        <button className={buttonClassName} disabled={main && !text.length} onClick={handleCancel} type='button'>
+          Cancel
+        </button>
+        <button
+          className={cx(buttonClassName, 'send')}
+          onClick={() => onSend(currentUser, text, [], parentMessage)}
+          type='button'
+        >
+          Send Message
+        </button>
+      </div>
     </div>
   );
 }
