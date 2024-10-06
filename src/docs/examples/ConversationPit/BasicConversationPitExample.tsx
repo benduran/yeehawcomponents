@@ -19,7 +19,7 @@ export function BasicConversationPitExample() {
         email: 'bruce@wayneenterprises.com',
         fullName: 'Bruce Wayne',
       },
-      createDate: dayjs().subtract(1, 'day').toDate(),
+      createDate: dayjs().subtract(4, 'hour').toDate(),
       id: '1',
       message: 'Hey there! How are you doing?',
     },

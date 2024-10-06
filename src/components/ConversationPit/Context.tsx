@@ -7,7 +7,8 @@ const context = createContext<ConversationPitContextProps | null>(null);
 export function ConversationPitContext({
   children,
   ...props
-}: Omit<ConversationPitContextProps, 'handleOpenReply' | 'openedReplyMessageId'> & PropsWithChildren) {
+}: Omit<ConversationPitContextProps, 'handleCloseReply' | 'handleOpenReply' | 'openedReplyMessageId'> &
+  PropsWithChildren) {
   /** state */
   const [openedReplyMessageId, setOpenedReplyMessageId] = useState('');
 
@@ -16,11 +17,13 @@ export function ConversationPitContext({
     (parentMessage: ConversationPitMessage) => setOpenedReplyMessageId(parentMessage.id),
     [],
   );
+  const handleCloseReply = useCallback(() => setOpenedReplyMessageId(''), []);
 
   /** memos */
   const providerVal = useMemo(
     (): ConversationPitContextProps => ({
       ...props,
+      handleCloseReply,
       handleOpenReply,
       openedReplyMessageId,
     }),

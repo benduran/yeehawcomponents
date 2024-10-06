@@ -11,7 +11,6 @@ export const styles = {
     display: flex;
     font-size: 0.8em;
     gap: 1em;
-    margin-bottom: 1em;
 
     & > button {
       background: none transparent;

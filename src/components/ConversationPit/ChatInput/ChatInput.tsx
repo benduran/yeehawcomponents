@@ -1,7 +1,6 @@
 import { ChangeEvent, KeyboardEvent, useCallback, useState } from 'react';
 
-import { useEventCallback } from '../../../hooks';
-import { cx } from '../../../util';
+import { useEventCallback, useMakeCx } from '../../../hooks';
 import { ChatInputButtons } from '../ChatInputButtons';
 import { useConversationPitContext } from '../Context';
 import type { ChatInputProps } from '../types';
@@ -12,7 +11,10 @@ import { styles } from './styles';
  */
 export function ChatInput({ className, main, message }: ChatInputProps) {
   /** context */
-  const { classes, currentUser, getChatInputPlaceholder, onSend } = useConversationPitContext();
+  const { classes, currentUser, getChatInputPlaceholder, handleCloseReply, onSend } = useConversationPitContext();
+
+  /** hooks */
+  const cx = useMakeCx('ConversationPit', 'ChatInput');
 
   /** state */
   const [text, setText] = useState(message?.message || '');
@@ -26,6 +28,7 @@ export function ChatInput({ className, main, message }: ChatInputProps) {
     // TODO: get the mentions from someplace?
     onSend(currentUser, text, []);
     setText('');
+    handleCloseReply();
   });
   const handleSendOnKeydown = useEventCallback((e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && e.metaKey) handleSend();

@@ -1,4 +1,4 @@
-import { cx } from '../../../util';
+import { useMakeCx } from '../../../hooks';
 import { useConversationPitContext } from '../Context';
 import { ConversationPitMessage } from '../types';
 import { styles } from './styles';
@@ -9,13 +9,19 @@ export interface MessageActionButtonsProps {
 
 export function MessageActionButtons({ parentMessage }: MessageActionButtonsProps) {
   /** context */
-  const { allowDeletion, allowEdit, currentUser, handleOpenReply } = useConversationPitContext();
+  const { allowDeletion, allowEdit, currentUser, handleOpenReply, openedReplyMessageId } = useConversationPitContext();
+
+  /** hooks */
+  const cx = useMakeCx('ConversationPit', 'MessageActionButtons');
 
   /** styles */
   const rootClassName = cx(styles.root);
 
   /** local variables */
   const authorIsCurrentUser = parentMessage.author.email === currentUser.email;
+  const thisHasReplyOpen = parentMessage.id === openedReplyMessageId;
+
+  if (thisHasReplyOpen) return null;
 
   return (
     <div className={rootClassName}>

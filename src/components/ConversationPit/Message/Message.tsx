@@ -1,4 +1,5 @@
-import { cx } from '../../../util';
+import { useMakeCx } from '../../../hooks';
+import { Date } from '../../../util/dates';
 import { ChatInput } from '../ChatInput';
 import { useConversationPitContext } from '../Context';
 import { MessageActionButtons } from '../MessageActionButtons/MessageActionButton';
@@ -11,10 +12,14 @@ const messageDetailsDisplayName = 'MessageDetails';
 const messageTextDisplayName = 'MessageText';
 const replyChatInputDisplayName = 'ReplyChatInput';
 const messageActionsDisplayName = 'MessageActions';
+const messageDateDisplayName = 'MessageDate';
 
 export function Message({ message }: MessageProps) {
   /** context */
-  const { classes, openedReplyMessageId } = useConversationPitContext();
+  const { allowDeletion, allowEdit, classes, currentUser, openedReplyMessageId } = useConversationPitContext();
+
+  /** hooks */
+  const cx = useMakeCx('ConversationPit', 'Message');
 
   /** styles */
   const rootClassName = cx(styles.root, classes?.message, displayName);
@@ -22,6 +27,12 @@ export function Message({ message }: MessageProps) {
   const messageTextClassName = cx(styles.text, classes?.messageText, messageTextDisplayName);
   const replyChatInputClassName = cx(styles.replyChatInput, classes?.replyChatInput, replyChatInputDisplayName);
   const messageActionsClassName = cx(styles.messageActions, classes?.messageActions, messageActionsDisplayName);
+  const messageDateClassName = cx(styles.messageDate, classes?.messageDate, messageDateDisplayName);
+
+  /** local variables */
+  const isReplyOpened = openedReplyMessageId === message.id;
+  const authorIsCurrentUser = message.author.email === currentUser.email;
+  const isSomeActionAllowed = ((allowDeletion || allowEdit) && authorIsCurrentUser) || !authorIsCurrentUser;
 
   return (
     <li className={rootClassName}>
@@ -30,10 +41,14 @@ export function Message({ message }: MessageProps) {
         <div>{message.author.fullName}</div>
       </div>
       <div className={messageTextClassName}>{message.message}</div>
-      {openedReplyMessageId === message.id && <ChatInput className={replyChatInputClassName} main={false} />}
       <div className={messageActionsClassName}>
+        <div className={messageDateClassName}>
+          {Date.relativeFromNow(message.updatedDate ?? message.createDate)}
+          {!isReplyOpened && isSomeActionAllowed && <div>•</div>}
+        </div>
         <MessageActionButtons parentMessage={message} />
       </div>
+      {isReplyOpened && <ChatInput className={replyChatInputClassName} main={false} />}
     </li>
   );
 }

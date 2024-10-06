@@ -1,5 +1,7 @@
 import { css } from '@emotion/css';
 
+import { colors } from '../../../styles';
+
 export const styles = {
   /**
    * Class name applied to the <div /> that holds a chat
@@ -14,8 +16,23 @@ export const styles = {
    * Class name applied to the <div /> that wraps around the message reply, edit and deletion action buttons
    */
   messageActions: css`
+    align-items: center;
+    display: flex;
+    gap: 0.5em;
     grid-column: 2 / 3;
     margin-top: 1em;
+  `,
+
+  /**
+   * Class name applied to the relative timestamp for when this
+   * message was posted
+   */
+  messageDate: css`
+    align-items: center;
+    color: ${colors.COLOR_GRAY_DARK};
+    display: flex;
+    gap: 0.5em;
+    font-size: 0.8em;
   `,
 
   /**

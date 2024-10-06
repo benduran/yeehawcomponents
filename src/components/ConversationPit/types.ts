@@ -116,6 +116,11 @@ export interface ConversationPitClasses {
    */
   messageActions: string;
   /**
+   * Class name applied to the relative datetime stamp
+   * for when a message was posted
+   */
+  messageDate: string;
+  /**
    * Class name applied to the <div /> that holds a chat
    * message's author name and send time
    */
@@ -183,6 +188,11 @@ export interface ConversationPitContextProps {
   getChatInputPlaceholder?: (main: boolean, message?: ConversationPitMessage) => string;
 
   /**
+   * Closes any opened chat replies
+   */
+  handleCloseReply: () => void;
+
+  /**
    * Opens the text reply box for a given message
    */
   handleOpenReply: (parentMessage: ConversationPitMessage) => void;
@@ -209,7 +219,12 @@ export interface ConversationPitContextProps {
   ) => void;
 }
 
-export type ConversationPitProps = ConversationPitContextProps &
+type UserProvidedContextProps = Omit<
+  ConversationPitContextProps,
+  'handleCloseReply' | 'handleOpenReply' | 'openedReplyMessageId'
+>;
+
+export type ConversationPitProps = UserProvidedContextProps &
   React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
 
 export interface ChatInputProps {

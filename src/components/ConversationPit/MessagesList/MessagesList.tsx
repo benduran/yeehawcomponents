@@ -1,4 +1,4 @@
-import { cx } from '../../../util';
+import { useMakeCx } from '../../../hooks';
 import { useConversationPitContext } from '../Context';
 import { Message } from '../Message';
 import { MessagesListProps } from '../types';
@@ -8,6 +8,9 @@ const displayName = 'MessagesList';
 export function MessagesList({ messages, parent }: MessagesListProps) {
   /** context */
   const { classes } = useConversationPitContext();
+
+  /** hooks */
+  const cx = useMakeCx('ConversationPit', 'MessagesList');
 
   /** local variables */
   const hasParent = Boolean(parent);

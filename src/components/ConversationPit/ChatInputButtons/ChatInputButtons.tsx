@@ -1,6 +1,4 @@
-import { IoHappyOutline, IoSendOutline } from 'react-icons/io5';
-
-import { cx } from '../../../util';
+import { useMakeCx } from '../../../hooks';
 import { useConversationPitContext } from '../Context';
 import { ChatInputButtonsProps } from '../types';
 import { styles } from './styles';
@@ -12,17 +10,20 @@ export function ChatInputButtons({ onSend }: ChatInputButtonsProps) {
   /** context */
   const { classes } = useConversationPitContext();
 
+  /** hooks */
+  const cx = useMakeCx('ConversationPit', 'ChatInputButtons');
+
   /** styles */
   const rootClassname = cx(styles.root, classes?.chatInputButtons, displayName);
   const buttonClassName = cx(styles.button, classes?.chatInputButton, buttonDisplayName);
 
   return (
     <div className={rootClassname}>
-      <button className={buttonClassName} onClick={onSend} type='button'>
-        <IoSendOutline />
-      </button>
       <button className={buttonClassName} type='button'>
-        <IoHappyOutline />
+        Cancel
+      </button>
+      <button className={cx(buttonClassName, 'send')} onClick={onSend} type='button'>
+        Send Message
       </button>
     </div>
   );
