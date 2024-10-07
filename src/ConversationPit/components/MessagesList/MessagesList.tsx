@@ -1,16 +1,16 @@
-import { useMakeCx } from '../../../../hooks';
-import { useConversationPitContext } from '../../../context';
-import { MessagesListProps } from '../../../types';
+import { useConversationPitContext } from '../../context';
+import { useMakeConversationPitCx } from '../../hooks';
+import { MessagesListProps } from '../../types';
 import { Message } from '../Message';
 import { styles } from './styles';
 
 const displayName = 'MessagesList';
-export function MessagesList({ messages, parent }: MessagesListProps) {
+export function MessagesList({ className, messages, parent }: MessagesListProps) {
   /** context */
   const { classes } = useConversationPitContext();
 
   /** hooks */
-  const cx = useMakeCx('ConversationPit', 'MessagesList');
+  const cx = useMakeConversationPitCx('MessagesList');
 
   /** local variables */
   const hasParent = Boolean(parent);
@@ -19,15 +19,18 @@ export function MessagesList({ messages, parent }: MessagesListProps) {
   const rootClassName = cx(
     styles.root,
     classes?.messagesList,
+    className,
     displayName,
     hasParent && cx(styles.childRoot, classes?.childMessagesList),
   );
 
   return (
     <ul className={rootClassName}>
-      {messages.map(m => (
-        <Message key={m.id} message={m} />
-      ))}
+      {messages
+        .filter(m => !m.parentId || (parent && parent.id === m.parentId))
+        .map(m => (
+          <Message key={m.id} message={m} />
+        ))}
     </ul>
   );
 }

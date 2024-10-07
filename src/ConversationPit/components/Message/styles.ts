@@ -1,8 +1,17 @@
 import { css } from '@emotion/css';
 
-import { colors } from '../../../../styles';
+import { colors } from '../../../styles';
 
 export const styles = {
+  /**
+   * Class name applied to any nested <ul /> child message list
+   * (represents a thread)
+   */
+  childMessages: css`
+    grid-column: 2 / 3;
+    margin-top: 0.5em;
+  `,
+
   /**
    * Class name applied to the <div /> that holds a chat
    * message's author name and send time
@@ -56,8 +65,13 @@ export const styles = {
    */
   root: css`
     align-items: center;
+    border-bottom: 1px solid red;
     display: grid;
     gap: 0 0.5em;
     grid-template-columns: min-content 1fr;
+
+    &:last-child {
+      border-bottom: none;
+    }
   `,
 };

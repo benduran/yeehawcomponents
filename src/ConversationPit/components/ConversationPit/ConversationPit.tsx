@@ -1,8 +1,8 @@
 import { forwardRef } from 'react';
 
-import { useMakeCx } from '../../../../hooks';
-import { ConversationPitContext } from '../../../context';
-import { ConversationPitProps } from '../../../types';
+import { ConversationPitContext } from '../../context';
+import { useMakeConversationPitCx } from '../../hooks';
+import { ConversationPitProps } from '../../types';
 import { ChatInput } from '../ChatInput';
 import { MessagesList } from '../MessagesList';
 import { styles } from './styles';
@@ -11,7 +11,7 @@ const displayName = 'ConversationPit';
 export const ConversationPit = forwardRef<HTMLDivElement, ConversationPitProps>(
   ({ className, classes, currentUser, onSend, messages, ...rest }, ref) => {
     /** hooks */
-    const cx = useMakeCx('ConversationPit', 'Root');
+    const cx = useMakeConversationPitCx('Root');
 
     return (
       <ConversationPitContext classes={classes} currentUser={currentUser} messages={messages} onSend={onSend}>

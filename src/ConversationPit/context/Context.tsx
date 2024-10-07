@@ -6,8 +6,12 @@ const context = createContext<ConversationPitContextProps | null>(null);
 
 export function ConversationPitContext({
   children,
+  messages,
   ...props
-}: Omit<ConversationPitContextProps, 'handleCloseReply' | 'handleOpenReply' | 'openedReplyMessageId'> &
+}: Omit<
+  ConversationPitContextProps,
+  'handleCloseReply' | 'handleOpenReply' | 'openedReplyMessageId' | 'parentIdsToChildMessages'
+> &
   PropsWithChildren) {
   /** state */
   const [openedReplyMessageId, setOpenedReplyMessageId] = useState('');
@@ -20,14 +24,30 @@ export function ConversationPitContext({
   const handleCloseReply = useCallback(() => setOpenedReplyMessageId(''), []);
 
   /** memos */
+
+  const parentIdsToChildMessages = useMemo<Map<string, ConversationPitMessage[]>>(() => {
+    const out: Map<string, ConversationPitMessage[]> = new Map();
+
+    for (const msg of messages) {
+      if (!msg.parentId) continue;
+
+      const children = out.get(msg.parentId) ?? [];
+      out.set(msg.parentId, [...children, msg]);
+    }
+
+    return out;
+  }, [messages]);
+
   const providerVal = useMemo(
     (): ConversationPitContextProps => ({
       ...props,
       handleCloseReply,
       handleOpenReply,
+      messages,
       openedReplyMessageId,
+      parentIdsToChildMessages,
     }),
-    [handleOpenReply, openedReplyMessageId],
+    [handleCloseReply, handleOpenReply, messages, openedReplyMessageId, parentIdsToChildMessages, props],
   );
 
   return <context.Provider value={providerVal}>{children}</context.Provider>;

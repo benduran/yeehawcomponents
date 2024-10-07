@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 
-import { useMakeCx } from '../../../../hooks';
-import { useConversationPitContext } from '../../../context';
-import { UserAvatarProps } from '../../../types';
+import { useConversationPitContext } from '../../context';
+import { useMakeConversationPitCx } from '../../hooks';
+import { UserAvatarProps } from '../../types';
 import { styles } from './styles';
 
 const displayName = 'ChatAvatar';
@@ -11,7 +11,7 @@ export function UserAvatar({ user }: UserAvatarProps) {
   const { classes } = useConversationPitContext();
 
   /** hooks */
-  const cx = useMakeCx('ConversationPit', 'UserAvatar');
+  const cx = useMakeConversationPitCx('UserAvatar');
 
   /** state */
   const [imageLoading, setImageLoading] = useState<'error' | 'loading' | 'ready-to-display' | 'loaded'>('loading');

@@ -6,13 +6,16 @@ import { useCallback } from 'react';
  * easily-identifiable classname
  */
 export function useMakeCx(libName: string, componentDisplayName: string) {
-  return useCallback((...classList: Array<boolean | null | string | undefined>) => {
-    let out = '';
+  return useCallback(
+    (...classList: Array<boolean | null | string | undefined>) => {
+      let out = '';
 
-    for (const entry of classList) {
-      if (entry) out += ` ${entry}`;
-    }
+      for (const entry of classList) {
+        if (entry) out += ` ${entry}`;
+      }
 
-    return `${out.trim()} ${libName}-${componentDisplayName}`;
-  }, []);
+      return `${out.trim()} ${libName}-${componentDisplayName}`;
+    },
+    [componentDisplayName, libName],
+  );
 }

@@ -64,6 +64,11 @@ export interface ConversationPitMessage {
 
 export interface MessagesListProps {
   /**
+   * CSS override classname
+   */
+  className?: string;
+
+  /**
    * List of messages for this particular thread
    */
   messages: ConversationPitMessage[];
@@ -219,6 +224,12 @@ export interface ConversationPitContextProps {
     mentions: string[],
     parentMessage: Nullish<ConversationPitMessage>,
   ) => void;
+
+  /**
+   * Lookup for messages to determine how to render themselves,
+   * based on who the parent is
+   */
+  parentIdsToChildMessages: Map<string, ConversationPitMessage[]>;
 }
 
 type UserProvidedContextProps = Omit<

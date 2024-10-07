@@ -1,8 +1,9 @@
 import { ChangeEvent, KeyboardEvent, useCallback, useState } from 'react';
 
-import { useEventCallback, useMakeCx } from '../../../../hooks';
-import { useConversationPitContext } from '../../../context';
-import type { ChatInputProps } from '../../../types';
+import { useEventCallback } from '../../../hooks';
+import { useConversationPitContext } from '../../context';
+import { useMakeConversationPitCx } from '../../hooks';
+import { ChatInputProps } from '../../types';
 import { styles } from './styles';
 
 /**
@@ -13,9 +14,9 @@ export function ChatInput({ className, main, message, parentMessage }: ChatInput
   const { classes, currentUser, getChatInputPlaceholder, handleCloseReply, onSend } = useConversationPitContext();
 
   /** hooks */
-  const cx = useMakeCx('ConversationPit', 'ChatInput');
-  const buttonsCx = useMakeCx('ConversationPit', 'ChatButtons');
-  const buttonCx = useMakeCx('ConversationPit', 'Button');
+  const cx = useMakeConversationPitCx('ChatInput');
+  const buttonsCx = useMakeConversationPitCx('ChatButtons');
+  const buttonCx = useMakeConversationPitCx('Button');
 
   /** state */
   const [text, setText] = useState(message?.message || '');
