@@ -18,5 +18,13 @@ export const styles = {
     list-style: none;
     margin: 0;
     padding: 0;
+
+    & > li {
+      margin-bottom: 0.5em;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
   `,
 };

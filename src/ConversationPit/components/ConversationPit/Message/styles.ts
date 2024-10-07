@@ -20,7 +20,7 @@ export const styles = {
     display: flex;
     gap: 0.5em;
     grid-column: 2 / 3;
-    margin-top: 1em;
+    margin-top: 0.5em;
   `,
 
   /**
