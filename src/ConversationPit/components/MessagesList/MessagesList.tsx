@@ -5,7 +5,7 @@ import { Message } from '../Message';
 import { styles } from './styles';
 
 const displayName = 'MessagesList';
-export function MessagesList({ className, messages, parent }: MessagesListProps) {
+export function MessagesList({ className, depth, messages, parent }: MessagesListProps) {
   /** context */
   const { classes } = useConversationPitContext();
 
@@ -29,7 +29,7 @@ export function MessagesList({ className, messages, parent }: MessagesListProps)
       {messages
         .filter(m => !m.parentId || (parent && parent.id === m.parentId))
         .map(m => (
-          <Message key={m.id} message={m} />
+          <Message depth={depth} key={m.id} message={m} />
         ))}
     </ul>
   );

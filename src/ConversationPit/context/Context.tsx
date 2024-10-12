@@ -1,18 +1,11 @@
 import { createContext, PropsWithChildren, useCallback, useContext, useMemo, useState } from 'react';
 
-import { ConversationPitContextProps, ConversationPitMessage } from '../types';
+import { Nullish } from '../../types';
+import { ConversationPitContextProps, ConversationPitMessage, ConversationPitProps } from '../types';
 
-const context = createContext<ConversationPitContextProps | null>(null);
+const context = createContext<Nullish<ConversationPitContextProps>>(null);
 
-export function ConversationPitContext({
-  children,
-  messages,
-  ...props
-}: Omit<
-  ConversationPitContextProps,
-  'handleCloseReply' | 'handleOpenReply' | 'openedReplyMessageId' | 'parentIdsToChildMessages'
-> &
-  PropsWithChildren) {
+export function ConversationPitContext({ children, messages, ...props }: ConversationPitProps & PropsWithChildren) {
   /** state */
   const [openedReplyMessageId, setOpenedReplyMessageId] = useState('');
 

@@ -62,7 +62,7 @@ export interface ConversationPitMessage {
   updatedDate?: Date;
 }
 
-export interface MessagesListProps {
+export interface MessagesListProps extends Pick<MessageProps, 'depth'> {
   /**
    * CSS override classname
    */
@@ -162,7 +162,31 @@ export interface ConversationPitClasses {
   root: string;
 }
 
-export interface ConversationPitContextProps {
+export interface ConversationPitContextSelfProps {
+  /**
+   * Closes any opened chat replies
+   */
+  handleCloseReply: () => void;
+
+  /**
+   * Opens the text reply box for a given message
+   */
+  handleOpenReply: (parentMessage: ConversationPitMessage) => void;
+
+  /**
+   * The ID of the message that currently has its reply controls opened
+   */
+  openedReplyMessageId: string;
+
+  /**
+   * Lookup for messages to determine how to render themselves,
+   * based on who the parent is
+   */
+  parentIdsToChildMessages: Map<string, ConversationPitMessage[]>;
+}
+
+export interface ConversationPitProps
+  extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
   /**
    * Whether or not a user should be able to delete messages
    * they've posted
@@ -196,16 +220,6 @@ export interface ConversationPitContextProps {
   getChatInputPlaceholder?: (main: boolean, message?: ConversationPitMessage) => string;
 
   /**
-   * Closes any opened chat replies
-   */
-  handleCloseReply: () => void;
-
-  /**
-   * Opens the text reply box for a given message
-   */
-  handleOpenReply: (parentMessage: ConversationPitMessage) => void;
-
-  /**
    * zero-indexed number, this determines the maximum depth of replies allowed.
    *
    * @default 1
@@ -218,11 +232,6 @@ export interface ConversationPitContextProps {
   messages: ConversationPitMessage[];
 
   /**
-   * The ID of the message that currently has its reply controls opened
-   */
-  openedReplyMessageId: string;
-
-  /**
    * callback fired when a user presses enter or the send button,
    * after they've typed a message
    */
@@ -232,21 +241,9 @@ export interface ConversationPitContextProps {
     mentions: string[],
     parentMessage: Nullish<ConversationPitMessage>,
   ) => void;
-
-  /**
-   * Lookup for messages to determine how to render themselves,
-   * based on who the parent is
-   */
-  parentIdsToChildMessages: Map<string, ConversationPitMessage[]>;
 }
 
-type UserProvidedContextProps = Omit<
-  ConversationPitContextProps,
-  'handleCloseReply' | 'handleOpenReply' | 'openedReplyMessageId'
->;
-
-export type ConversationPitProps = UserProvidedContextProps &
-  React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
+export type ConversationPitContextProps = ConversationPitContextSelfProps & ConversationPitProps;
 
 export interface ChatInputProps {
   /**

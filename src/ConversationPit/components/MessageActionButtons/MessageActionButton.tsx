@@ -1,13 +1,13 @@
 import { useConversationPitContext } from '../../context';
 import { useMakeConversationPitCx } from '../../hooks';
-import { ConversationPitMessage } from '../../types';
+import { ConversationPitMessage, MessageProps } from '../../types';
 import { styles } from './styles';
 
-export interface MessageActionButtonsProps {
+export interface MessageActionButtonsProps extends Pick<MessageProps, 'depth'> {
   message: ConversationPitMessage;
 }
 
-export function MessageActionButtons({ message }: MessageActionButtonsProps) {
+export function MessageActionButtons({ depth, message }: MessageActionButtonsProps) {
   /** context */
   const { allowDeletion, allowEdit, currentUser, handleOpenReply, openedReplyMessageId } = useConversationPitContext();
 

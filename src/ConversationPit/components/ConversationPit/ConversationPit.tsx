@@ -16,7 +16,7 @@ export const ConversationPit = forwardRef<HTMLDivElement, ConversationPitProps>(
     return (
       <ConversationPitContext classes={classes} currentUser={currentUser} messages={messages} onSend={onSend}>
         <div {...rest} className={cx(styles.root, displayName, className, classes?.root)} ref={ref}>
-          <MessagesList messages={messages} />
+          <MessagesList depth={0} messages={messages} />
           <ChatInput main parentMessage={null} />
         </div>
       </ConversationPitContext>

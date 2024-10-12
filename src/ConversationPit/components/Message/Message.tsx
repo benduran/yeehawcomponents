@@ -55,7 +55,7 @@ export function Message({ depth, message }: MessageProps) {
       </div>
       {isReplyOpened && <ChatInput className={replyChatInputClassName} main={false} parentMessage={message} />}
       {childMessages?.length && (
-        <MessagesList className={childMessagesClassName} messages={childMessages} parent={message} />
+        <MessagesList className={childMessagesClassName} depth={depth + 1} messages={childMessages} parent={message} />
       )}
     </li>
   );
