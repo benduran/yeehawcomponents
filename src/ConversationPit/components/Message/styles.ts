@@ -65,13 +65,9 @@ export const styles = {
    */
   root: css`
     align-items: center;
-    border-bottom: 1px solid red;
     display: grid;
     gap: 0 0.5em;
     grid-template-columns: min-content 1fr;
-
-    &:last-child {
-      border-bottom: none;
-    }
+    padding-bottom: 0.5em;
   `,
 };

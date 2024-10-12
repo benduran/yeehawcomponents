@@ -10,6 +10,8 @@ const currentUser: ConversationPitUser = {
   fullName: 'Yeehaw Cowboy',
 };
 
+const firstMsgCreateDate = dayjs().subtract(4, 'hours');
+
 export function BasicConversationPitExample() {
   /** state */
   const [messages, setMessages] = useState<ConversationPitMessage[]>([
@@ -19,13 +21,35 @@ export function BasicConversationPitExample() {
         email: 'bruce@wayneenterprises.com',
         fullName: 'Bruce Wayne',
       },
-      createDate: dayjs().subtract(4, 'hour').toDate(),
+      createDate: firstMsgCreateDate.toDate(),
       id: '1',
       message: 'Hey there! How are you doing?',
     },
+    {
+      author: {
+        avatarUrl:
+          'https://static1.colliderimages.com/wordpress/wp-content/uploads/2019/10/strange-secret-of-bruce-wayne-joker-600x451.jpg',
+        email: 'joker@mischief.net',
+        fullName: 'The Joker',
+      },
+      createDate: firstMsgCreateDate.add(10, 'minutes').toDate(),
+      id: '2',
+      message: 'What? Why are you contacting me?',
+      parentId: '1',
+    },
+    {
+      author: {
+        avatarUrl:
+          'https://static1.colliderimages.com/wordpress/wp-content/uploads/2019/10/strange-secret-of-bruce-wayne-joker-600x451.jpg',
+        email: 'joker@mischief.net',
+        fullName: 'The Joker',
+      },
+      createDate: firstMsgCreateDate.add(15, 'minutes').toDate(),
+      id: '3',
+      message: 'And I thought I was the crazy one!',
+      parentId: '1',
+    },
   ]);
-
-  console.info(messages);
 
   return (
     <ConversationPit

@@ -51,7 +51,7 @@ export function Message({ depth, message }: MessageProps) {
           {Dates.relativeFromNow(message.updatedDate ?? message.createDate)}
           {!isReplyOpened && isSomeActionAllowed && <div>•</div>}
         </div>
-        <MessageActionButtons message={message} />
+        <MessageActionButtons depth={depth} message={message} />
       </div>
       {isReplyOpened && <ChatInput className={replyChatInputClassName} main={false} parentMessage={message} />}
       {childMessages?.length && (
