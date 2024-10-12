@@ -80,6 +80,7 @@ export interface MessagesListProps {
 }
 
 export interface MessageProps {
+  depth: number;
   message: ConversationPitMessage;
 }
 
@@ -203,6 +204,13 @@ export interface ConversationPitContextProps {
    * Opens the text reply box for a given message
    */
   handleOpenReply: (parentMessage: ConversationPitMessage) => void;
+
+  /**
+   * zero-indexed number, this determines the maximum depth of replies allowed.
+   *
+   * @default 1
+   */
+  maxThreadDepth?: number;
 
   /**
    * Array of messages to display in the component

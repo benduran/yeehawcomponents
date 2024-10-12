@@ -15,7 +15,7 @@ const replyChatInputDisplayName = 'ReplyChatInput';
 const messageActionsDisplayName = 'MessageActions';
 const messageDateDisplayName = 'MessageDate';
 
-export function Message({ message }: MessageProps) {
+export function Message({ depth, message }: MessageProps) {
   /** context */
   const { allowDeletion, allowEdit, classes, currentUser, openedReplyMessageId, parentIdsToChildMessages } =
     useConversationPitContext();

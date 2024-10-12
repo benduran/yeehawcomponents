@@ -3,7 +3,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Prism as SyntaxHighlighter, SyntaxHighlighterProps } from 'react-syntax-highlighter';
 import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
-import classes from './codesnippet.module.css';
+import { styles } from './styles';
 
 export interface CodeSnippetProps extends Pick<SyntaxHighlighterProps, 'language'> {
   /**
@@ -40,10 +40,10 @@ export function CodeSnippet({ allowCopy = false, snippet, ...rest }: CodeSnippet
   }, [copied]);
 
   return (
-    <div className={classes.root}>
+    <div className={styles.root}>
       {allowCopy && (
         <CopyToClipboard onCopy={() => setCopied(true)} text={snippet}>
-          <button className={classes.copyBtn} type='button'>
+          <button className={styles.copyBtn} type='button'>
             {copied ? 'Copied!' : 'Copy Snippet'}
           </button>
         </CopyToClipboard>

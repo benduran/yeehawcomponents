@@ -1,11 +1,11 @@
 import { FC, ReactNode } from 'react';
 
 import { DocsNav } from '../../components';
-import classes from './docslayout.module.css';
+import { styles } from './styles';
 
 export const DocsLayout: FC<{ children: ReactNode | ReactNode[] }> = ({ children }) => (
-  <main className={classes.docsLayout} id='docs-layout'>
-    <div className={classes.docsContent}>
+  <main className={styles.docsLayout} id='docs-layout'>
+    <div className={styles.docsContent}>
       <DocsNav />
       <article>{children}</article>
     </div>

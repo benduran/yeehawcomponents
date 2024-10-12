@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 
-import classes from './componentdoc.module.css';
 import { ComponentExample } from './ComponentExample';
+import { styles } from './styles';
 
 export interface ComponentDocProps {
   /**
@@ -17,7 +17,7 @@ export interface ComponentDocProps {
 
 export function ComponentDoc({ componentName, examples }: ComponentDocProps) {
   return (
-    <div className={classes.componentDocRoot}>
+    <div className={styles.componentDocRoot}>
       <h1>{componentName}</h1>
       {examples}
     </div>

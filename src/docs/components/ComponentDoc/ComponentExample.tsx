@@ -2,7 +2,7 @@ import { PropsWithChildren, useState } from 'react';
 import { IoChevronDownCircle, IoChevronUpCircle } from 'react-icons/io5';
 
 import { CodeSnippet } from '../CodeSnippet';
-import classes from './componentdoc.module.css';
+import { styles } from './styles';
 
 export interface ComponentExampleProps extends PropsWithChildren {
   /**
@@ -29,12 +29,12 @@ export function ComponentExample({ children, code, description, name }: Componen
   const CodeSnippetIcon = showCodeSnippet ? IoChevronUpCircle : IoChevronDownCircle;
 
   return (
-    <div className={classes.componentExampleRoot} id={name}>
-      <h3 className={classes.componentExampleName}>{name}</h3>
-      <div className={classes.componentExampleDescription} id={`${name}-description`}>
+    <div className={styles.componentExampleRoot} id={name}>
+      <h3 className={styles.componentExampleName}>{name}</h3>
+      <div className={styles.componentExampleDescription} id={`${name}-description`}>
         {description}
       </div>
-      <div className={classes.componentExampleCode}>
+      <div className={styles.componentExampleCode}>
         <div
           aria-label='View code snippet'
           onClick={() => setShowCodeSnippet(prev => !prev)}
