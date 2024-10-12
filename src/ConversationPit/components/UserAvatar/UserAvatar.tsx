@@ -6,18 +6,17 @@ import { UserAvatarProps } from '../../types';
 import { styles } from './styles';
 
 const displayName = 'ChatAvatar';
-export function UserAvatar({ user }: UserAvatarProps) {
+export function UserAvatar({ className, displayIndent, user }: UserAvatarProps) {
   /** context */
   const { classes } = useConversationPitContext();
-
-  /** hooks */
-  const cx = useMakeConversationPitCx('UserAvatar');
 
   /** state */
   const [imageLoading, setImageLoading] = useState<'error' | 'loading' | 'ready-to-display' | 'loaded'>('loading');
 
   /** styles */
-  const rootClassName = cx(styles.root, classes?.userAvatar, displayName);
+  const cx = useMakeConversationPitCx('UserAvatar');
+  const rootClassName = cx(styles.root, classes?.userAvatar, className, displayName);
+  const indentClassName = cx(styles.indentGuide);
 
   /** memos */
   const initials = useMemo(() => {
@@ -46,13 +45,14 @@ export function UserAvatar({ user }: UserAvatarProps) {
       {Boolean(user.avatarUrl) && showImage && (
         <img
           alt={`${user.fullName}'s Avatar`}
-          className={cx(styles.image)}
-          onError={() => setImageLoading('error')}
-          onLoad={() => setImageLoading('loaded')}
+          className={cx(styles.image, styles.imageOrInitials)}
           src={user.avatarUrl}
         />
       )}
-      <span className={cx(styles.initials, showImage && styles.hideInitials)}>{initials}</span>
+      {(!user.avatarUrl || !showImage) && (
+        <div className={cx(styles.initials, styles.imageOrInitials, showImage && styles.hideInitials)}>{initials}</div>
+      )}
+      {displayIndent && <div className={indentClassName} />}
     </div>
   );
 }

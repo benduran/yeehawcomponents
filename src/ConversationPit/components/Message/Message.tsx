@@ -13,6 +13,7 @@ const messageDetailsDisplayName = 'MessageDetails';
 const messageTextDisplayName = 'MessageText';
 const replyChatInputDisplayName = 'ReplyChatInput';
 const messageActionsDisplayName = 'MessageActions';
+const messageContentsDisplayName = 'MessageContents';
 const messageDateDisplayName = 'MessageDate';
 
 export function Message({ depth, message }: MessageProps) {
@@ -24,6 +25,12 @@ export function Message({ depth, message }: MessageProps) {
   const cx = useMakeConversationPitCx('Message');
   const childCx = useMakeConversationPitCx('ChildMessages');
 
+  /** local variables */
+  const isReplyOpened = openedReplyMessageId === message.id;
+  const authorIsCurrentUser = message.author.email === currentUser.email;
+  const isSomeActionAllowed = ((allowDeletion || allowEdit) && authorIsCurrentUser) || !authorIsCurrentUser;
+  const childMessages = parentIdsToChildMessages.get(message.id);
+
   /** styles */
   const rootClassName = cx(styles.root, classes?.message, displayName);
   const usernameClassname = cx(styles.details, classes?.messageDetails, messageDetailsDisplayName);
@@ -31,32 +38,34 @@ export function Message({ depth, message }: MessageProps) {
   const replyChatInputClassName = cx(styles.replyChatInput, classes?.replyChatInput, replyChatInputDisplayName);
   const messageActionsClassName = cx(styles.messageActions, classes?.messageActions, messageActionsDisplayName);
   const messageDateClassName = cx(styles.messageDate, classes?.messageDate, messageDateDisplayName);
+  const messageContentsClassName = cx(styles.messageContents, classes?.messageContents, messageContentsDisplayName);
   const childMessagesClassName = childCx(styles.childMessages);
-
-  /** local variables */
-  const isReplyOpened = openedReplyMessageId === message.id;
-  const authorIsCurrentUser = message.author.email === currentUser.email;
-  const isSomeActionAllowed = ((allowDeletion || allowEdit) && authorIsCurrentUser) || !authorIsCurrentUser;
-  const childMessages = parentIdsToChildMessages.get(message.id);
 
   return (
     <li className={rootClassName}>
-      <UserAvatar user={message.author} />
-      <div className={usernameClassname}>
-        <div>{message.author.fullName}</div>
-      </div>
-      <div className={messageTextClassName}>{message.message}</div>
-      <div className={messageActionsClassName}>
-        <div className={messageDateClassName}>
-          {Dates.relativeFromNow(message.updatedDate ?? message.createDate)}
-          {!isReplyOpened && isSomeActionAllowed && <div>•</div>}
+      <UserAvatar displayIndent={Boolean(childMessages?.length)} user={message.author} />
+      <div className={messageContentsClassName}>
+        <div className={usernameClassname}>
+          <div>{message.author.fullName}</div>
         </div>
-        <MessageActionButtons depth={depth} message={message} />
+        <div className={messageTextClassName}>{message.message}</div>
+        <div className={messageActionsClassName}>
+          <div className={messageDateClassName}>
+            {Dates.relativeFromNow(message.updatedDate ?? message.createDate)}
+            {!isReplyOpened && isSomeActionAllowed && <div>•</div>}
+          </div>
+          <MessageActionButtons depth={depth} message={message} />
+        </div>
+        {isReplyOpened && <ChatInput className={replyChatInputClassName} main={false} parentMessage={message} />}
+        {childMessages?.length && (
+          <MessagesList
+            className={childMessagesClassName}
+            depth={depth + 1}
+            messages={childMessages}
+            parent={message}
+          />
+        )}
       </div>
-      {isReplyOpened && <ChatInput className={replyChatInputClassName} main={false} parentMessage={message} />}
-      {childMessages?.length && (
-        <MessagesList className={childMessagesClassName} depth={depth + 1} messages={childMessages} parent={message} />
-      )}
     </li>
   );
 }

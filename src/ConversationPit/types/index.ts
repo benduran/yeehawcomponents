@@ -85,6 +85,8 @@ export interface MessageProps {
 }
 
 export interface UserAvatarProps {
+  className?: string;
+  displayIndent: boolean;
   user: ConversationPitUser;
 }
 
@@ -123,6 +125,13 @@ export interface ConversationPitClasses {
    * Class name applied to the <div /> that wraps around the message reply, edit and deletion action buttons
    */
   messageActions: string;
+
+  /**
+   * Class name applied to the <div /> that contains all
+   * message contents, excluding the <UserAvatar />
+   */
+  messageContents: string;
+
   /**
    * Class name applied to the relative datetime stamp
    * for when a message was posted

@@ -9,6 +9,5 @@ export const styles = {
     display: flex;
     flex-direction: column;
     min-height: 0;
-    position: relative;
   `,
 };

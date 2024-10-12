@@ -13,10 +13,24 @@ export const styles = {
    * Class name applied to the actual user avatar <img />
    */
   image: css`
-    height: 100%;
     object-fit: cover;
-    width: 100%;
   `,
+
+  /**
+   * Class name applied to the initial or image for rounding
+   * the borders and normalizing the avatar display
+   */
+  imageOrInitials: css`
+    align-items: center;
+    background-color: ${colors.COLOR_GRAY};
+    border-radius: 50%;
+    display: flex;
+    height: ${heights.HEIGHT_AVATAR};
+    justify-content: center;
+    overflow: hidden;
+    width: ${heights.HEIGHT_AVATAR};
+  `,
+
   /**
    * Class name applied when the avatar has failed to load
    */
@@ -30,6 +44,15 @@ export const styles = {
     visibility: hidden;
   `,
 
+  /**
+   * Class name for the conditionally-rendered indent guide line
+   */
+  indentGuide: css`
+    background-color: ${colors.COLOR_GRAY};
+    flex-grow: 1;
+    width: 1px;
+  `,
+
   /** Class name applied to the initials */
   initials: css``,
 
@@ -39,13 +62,11 @@ export const styles = {
    */
   root: css`
     align-items: center;
-    background-color: ${colors.COLOR_GRAY};
-    border-radius: 50%;
     display: flex;
+    flex-direction: column;
     font-size: 0.8em;
-    height: ${heights.HEIGHT_AVATAR};
-    justify-content: center;
-    overflow: hidden;
-    width: ${heights.HEIGHT_AVATAR};
+    gap: 0.5em;
+    height: 100%;
+    position: relative;
   `,
 };

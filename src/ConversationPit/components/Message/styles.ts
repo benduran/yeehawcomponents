@@ -33,6 +33,12 @@ export const styles = {
   `,
 
   /**
+   * Class name applied to the <div /> that contains all
+   * message contents, excluding the <UserAvatar />
+   */
+  messageContents: css``,
+
+  /**
    * Class name applied to the relative timestamp for when this
    * message was posted
    */
@@ -64,10 +70,11 @@ export const styles = {
    *  Class name applied to the <li /> that holds each received message
    */
   root: css`
-    align-items: center;
+    align-items: flex-start;
     display: grid;
     gap: 0 0.5em;
-    grid-template-columns: min-content 1fr;
+    grid-template-columns: auto 1fr;
     padding-bottom: 0.5em;
+    position: relative;
   `,
 };
