@@ -1,8 +1,9 @@
-import { ChangeEvent, KeyboardEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useCallback, useEffect, useState } from 'react';
 
 import { useEventCallback } from '../../../hooks';
+import { Nullish } from '../../../types';
 import { useConversationPitContext } from '../../context';
-import { useMakeConversationPitCx } from '../../hooks';
+import { useGetCursorPosition, useMakeConversationPitCx } from '../../hooks';
 import { ChatInputProps } from '../../types';
 import { styles } from './styles';
 
@@ -11,18 +12,18 @@ import { styles } from './styles';
  */
 export function ChatInput({ className, main, message, parentMessage }: ChatInputProps) {
   /** context */
-  const { classes, currentUser, getChatInputPlaceholder, handleCloseReply, onSend } = useConversationPitContext();
+  const { classes, currentUser, getChatInputPlaceholder, handleCloseReply, mentionTriggers, onSend } =
+    useConversationPitContext();
+
+  /** state */
+  const [text, setText] = useState(message?.message || '');
+  const [textareaRef, setTextareaRef] = useState<Nullish<HTMLTextAreaElement>>(null);
 
   /** hooks */
   const cx = useMakeConversationPitCx('ChatInput');
   const buttonsCx = useMakeConversationPitCx('ChatButtons');
   const buttonCx = useMakeConversationPitCx('Button');
-
-  /** state */
-  const [text, setText] = useState(message?.message || '');
-
-  /** refs */
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const mention = useGetCursorPosition(textareaRef, mentionTriggers);
 
   /** local variables */
   const placeholder =
@@ -61,10 +62,10 @@ export function ChatInput({ className, main, message, parentMessage }: ChatInput
 
   /** effects */
   useEffect(() => {
-    if (!isNestedReply || !textareaRef.current) return;
+    if (!isNestedReply || !textareaRef) return;
 
-    textareaRef.current.focus();
-  }, [isNestedReply]);
+    textareaRef.focus();
+  }, [isNestedReply, textareaRef]);
 
   return (
     <div className={rootClassName}>
@@ -73,7 +74,7 @@ export function ChatInput({ className, main, message, parentMessage }: ChatInput
         onChange={handleChatInputChange}
         onKeyDown={handleSendOnKeydown}
         placeholder={placeholder}
-        ref={textareaRef}
+        ref={setTextareaRef}
         value={text}
       />
       <div className={chatInputButtonsClassName}>

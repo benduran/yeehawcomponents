@@ -241,6 +241,13 @@ export interface ConversationPitProps
   maxThreadDepth?: number;
 
   /**
+   * Collection of characters that should be treated as the start of a mention
+   *
+   * @default ['@']
+   */
+  mentionTriggers?: string[];
+
+  /**
    * Array of messages to display in the component
    */
   messages: ConversationPitMessage[];
