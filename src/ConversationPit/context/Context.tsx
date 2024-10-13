@@ -8,6 +8,7 @@ const context = createContext<Nullish<ConversationPitContextProps>>(null);
 export function ConversationPitContext({ children, messages, ...props }: ConversationPitProps & PropsWithChildren) {
   /** state */
   const [openedReplyMessageId, setOpenedReplyMessageId] = useState('');
+  const [collapsedMessageIds, setCollapsedMessageIds] = useState<Set<string>>(new Set());
 
   /** callbacks */
   const handleOpenReply = useCallback(
@@ -18,7 +19,12 @@ export function ConversationPitContext({ children, messages, ...props }: Convers
   const handleCloseReply = useCallback(() => setOpenedReplyMessageId(''), []);
 
   const handleIndentGuideClick = useCallback((parentMessage: ConversationPitMessage) => {
-    alert(JSON.stringify(parentMessage));
+    setCollapsedMessageIds(prev => {
+      if (prev.has(parentMessage.id)) {
+        return new Set(Array.from(prev).filter(id => id !== parentMessage.id));
+      }
+      return new Set([...Array.from(prev), parentMessage.id]);
+    });
   }, []);
 
   /** memos */
@@ -39,6 +45,7 @@ export function ConversationPitContext({ children, messages, ...props }: Convers
   const providerVal = useMemo(
     (): ConversationPitContextProps => ({
       ...props,
+      collapsedMessageIds,
       handleCloseReply,
       handleIndentGuideClick,
       handleOpenReply,
@@ -47,6 +54,7 @@ export function ConversationPitContext({ children, messages, ...props }: Convers
       parentIdsToChildMessages,
     }),
     [
+      collapsedMessageIds,
       handleCloseReply,
       handleIndentGuideClick,
       handleOpenReply,

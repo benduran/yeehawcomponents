@@ -1,15 +1,18 @@
 import { useConversationPitContext } from '../../context';
 import { useMakeConversationPitCx } from '../../hooks';
-import { ConversationPitMessage, MessageProps } from '../../types';
+import { ConversationPitMessage } from '../../types';
 import { styles } from './styles';
 
-export interface MessageActionButtonsProps extends Pick<MessageProps, 'depth'> {
+export interface MessageActionButtonsProps {
+  canDelete: boolean;
+  canEdit: boolean;
+  canReply: boolean;
   message: ConversationPitMessage;
 }
 
-export function MessageActionButtons({ depth, message }: MessageActionButtonsProps) {
+export function MessageActionButtons({ canDelete, canEdit, canReply, message }: MessageActionButtonsProps) {
   /** context */
-  const { allowDeletion, allowEdit, currentUser, handleOpenReply, openedReplyMessageId } = useConversationPitContext();
+  const { handleOpenReply, openedReplyMessageId } = useConversationPitContext();
 
   /** hooks */
   const cx = useMakeConversationPitCx('MessageActionButtons');
@@ -18,25 +21,23 @@ export function MessageActionButtons({ depth, message }: MessageActionButtonsPro
   const rootClassName = cx(styles.root);
 
   /** local variables */
-  const authorIsCurrentUser = message.author.email === currentUser.email;
-
   const thisHasReplyOpen = message.id === openedReplyMessageId;
 
   if (thisHasReplyOpen) return null;
 
   return (
     <div className={rootClassName}>
-      {allowDeletion && authorIsCurrentUser && (
+      {canDelete && (
         <button onClick={() => console.info('handle delete')} type='button'>
           Delete
         </button>
       )}
-      {allowEdit && authorIsCurrentUser && (
+      {canEdit && (
         <button onClick={() => console.info('handle edit')} type='button'>
           Edit
         </button>
       )}
-      {!authorIsCurrentUser && (
+      {canReply && (
         <button onClick={() => handleOpenReply(message)} type='button'>
           Reply
         </button>

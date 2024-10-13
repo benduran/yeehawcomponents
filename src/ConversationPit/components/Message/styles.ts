@@ -54,6 +54,7 @@ export const styles = {
    * Class name applied to the nested reply text box
    */
   replyChatInput: css`
+    margin-bottom: -0.5em;
     margin-top: 1em;
   `,
 

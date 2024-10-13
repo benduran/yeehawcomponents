@@ -80,11 +80,7 @@ export function ChatInput({ className, main, message, parentMessage }: ChatInput
         <button className={buttonClassName} disabled={main && !text.length} onClick={handleCancel} type='button'>
           Cancel
         </button>
-        <button
-          className={cx(buttonClassName, 'send')}
-          onClick={() => onSend(currentUser, text, [], parentMessage)}
-          type='button'
-        >
+        <button className={cx(buttonClassName, 'send')} onClick={handleSend} type='button'>
           Send Message
         </button>
       </div>

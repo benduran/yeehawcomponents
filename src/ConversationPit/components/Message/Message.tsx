@@ -18,8 +18,16 @@ const messageDateDisplayName = 'MessageDate';
 
 export function Message({ depth, message }: MessageProps) {
   /** context */
-  const { allowDeletion, allowEdit, classes, currentUser, openedReplyMessageId, parentIdsToChildMessages } =
-    useConversationPitContext();
+  const {
+    allowDeletion,
+    allowEdit,
+    classes,
+    collapsedMessageIds,
+    currentUser,
+    maxThreadDepth = 1,
+    openedReplyMessageId,
+    parentIdsToChildMessages,
+  } = useConversationPitContext();
 
   /** hooks */
   const cx = useMakeConversationPitCx('Message');
@@ -30,6 +38,12 @@ export function Message({ depth, message }: MessageProps) {
   const authorIsCurrentUser = message.author.email === currentUser.email;
   const isSomeActionAllowed = ((allowDeletion || allowEdit) && authorIsCurrentUser) || !authorIsCurrentUser;
   const childMessages = parentIdsToChildMessages.get(message.id);
+  const isMaxDepth = depth >= maxThreadDepth;
+  const canDelete = Boolean(allowDeletion && authorIsCurrentUser);
+  const canEdit = Boolean(allowEdit && authorIsCurrentUser);
+  const canReply = !isMaxDepth && !authorIsCurrentUser;
+  const hasAnyAction = canDelete || canEdit || canReply;
+  const childrenAreCollapsed = collapsedMessageIds.has(message.id);
 
   /** styles */
   const rootClassName = cx(styles.root, classes?.message, displayName);
@@ -43,7 +57,7 @@ export function Message({ depth, message }: MessageProps) {
 
   return (
     <li className={rootClassName}>
-      <UserAvatar displayIndent={Boolean(childMessages?.length)} user={message.author} />
+      <UserAvatar displayIndent={Boolean(childMessages?.length)} message={message} user={message.author} />
       <div className={messageContentsClassName}>
         <div className={usernameClassname}>
           <div>{message.author.fullName}</div>
@@ -52,12 +66,12 @@ export function Message({ depth, message }: MessageProps) {
         <div className={messageActionsClassName}>
           <div className={messageDateClassName}>
             {Dates.relativeFromNow(message.updatedDate ?? message.createDate)}
-            {!isReplyOpened && isSomeActionAllowed && <div>•</div>}
+            {hasAnyAction && !isReplyOpened && isSomeActionAllowed && <div>•</div>}
           </div>
-          <MessageActionButtons depth={depth} message={message} />
+          <MessageActionButtons canDelete={canDelete} canEdit={canEdit} canReply={canReply} message={message} />
         </div>
         {isReplyOpened && <ChatInput className={replyChatInputClassName} main={false} parentMessage={message} />}
-        {childMessages?.length && (
+        {childMessages?.length && !childrenAreCollapsed && (
           <MessagesList
             className={childMessagesClassName}
             depth={depth + 1}

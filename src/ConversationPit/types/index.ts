@@ -87,6 +87,7 @@ export interface MessageProps {
 export interface UserAvatarProps {
   className?: string;
   displayIndent: boolean;
+  message: ConversationPitMessage;
   user: ConversationPitUser;
 }
 
@@ -166,6 +167,11 @@ export interface ConversationPitClasses {
 }
 
 export interface ConversationPitContextSelfProps {
+  /**
+   * Collection of message IDs for threads the user has collapsed
+   */
+  collapsedMessageIds: Set<string>;
+
   /**
    * Closes any opened chat replies
    */

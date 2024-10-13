@@ -6,9 +6,9 @@ import { UserAvatarProps } from '../../types';
 import { styles } from './styles';
 
 const displayName = 'ChatAvatar';
-export function UserAvatar({ className, displayIndent, user }: UserAvatarProps) {
+export function UserAvatar({ className, displayIndent, message, user }: UserAvatarProps) {
   /** context */
-  const { classes } = useConversationPitContext();
+  const { classes, handleIndentGuideClick } = useConversationPitContext();
 
   /** state */
   const [imageLoading, setImageLoading] = useState<'error' | 'loading' | 'ready-to-display' | 'loaded'>('loading');
@@ -53,7 +53,14 @@ export function UserAvatar({ className, displayIndent, user }: UserAvatarProps) 
         <div className={cx(styles.initials, styles.imageOrInitials, showImage && styles.hideInitials)}>{initials}</div>
       )}
       {displayIndent && (
-        <div aria-label={`Expand or collapse chat message`} className={indentClassName} role='button' />
+        <div
+          aria-label={`Expand or collapse chat message`}
+          className={indentClassName}
+          onClick={() => handleIndentGuideClick(message)}
+          onKeyDown={e => (e.key === 'Space' || e.key === 'Enter') && handleIndentGuideClick(message)}
+          role='button'
+          tabIndex={0}
+        />
       )}
     </div>
   );

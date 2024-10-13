@@ -50,7 +50,13 @@ export const styles = {
   indentGuide: css`
     background-color: ${colors.COLOR_GRAY};
     flex-grow: 1;
-    width: 1px;
+    width: 4px;
+    transition: width 0.2s ease;
+
+    &:hover {
+      cursor: pointer;
+      width: 10px;
+    }
   `,
 
   /** Class name applied to the initials */
