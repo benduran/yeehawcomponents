@@ -1,9 +1,16 @@
+import { css } from '@emotion/css';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 
 import { ConversationPit, ConversationPitMessage, ConversationPitUser } from '../../../ConversationPit';
 
 /* ---FENCE--- */
+
+const rootClassName = css`
+  display: flex;
+  flex-direction: column;
+  height: 400px;
+`;
 
 const currentUser: ConversationPitUser = {
   email: 'someuser@yeehawcomponents.com',
@@ -52,21 +59,23 @@ export function BasicConversationPitExample() {
   ]);
 
   return (
-    <ConversationPit
-      currentUser={currentUser}
-      messages={messages}
-      onSend={(user, message, mentions, parentMessage) =>
-        setMessages(prev => [
-          ...prev,
-          {
-            author: user,
-            createDate: new Date(),
-            id: performance.now().toString(),
-            message,
-            parentId: parentMessage?.id,
-          },
-        ])
-      }
-    />
+    <div className={rootClassName}>
+      <ConversationPit
+        currentUser={currentUser}
+        messages={messages}
+        onSend={(user, message, mentions, parentMessage) =>
+          setMessages(prev => [
+            ...prev,
+            {
+              author: user,
+              createDate: new Date(),
+              id: performance.now().toString(),
+              message,
+              parentId: parentMessage?.id,
+            },
+          ])
+        }
+      />
+    </div>
   );
 }

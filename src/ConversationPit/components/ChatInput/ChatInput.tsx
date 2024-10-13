@@ -24,8 +24,19 @@ export function ChatInput({ className, main, message, parentMessage }: ChatInput
   /** refs */
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+  /** local variables */
+  const placeholder =
+    getChatInputPlaceholder?.(main, message) || main ? 'Type your message here...' : 'Type your reply here...';
+  const isNestedReply = Boolean(parentMessage);
+
   /** styles */
-  const rootClassName = cx(styles.root, classes?.chatInput, main && classes?.mainChatInput, className);
+  const rootClassName = cx(
+    styles.root,
+    classes?.chatInput,
+    main && styles.mainChatInput,
+    main && classes?.mainChatInput,
+    className,
+  );
   const chatInputButtonsClassName = buttonsCx(styles.chatInputButtons, classes?.chatInputButtons);
   const buttonClassName = buttonCx(styles.button, classes?.chatInputButton, '');
 
@@ -47,11 +58,6 @@ export function ChatInput({ className, main, message, parentMessage }: ChatInput
   const handleSendOnKeydown = useEventCallback((e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) handleSend();
   });
-
-  /** local variables */
-  const placeholder =
-    getChatInputPlaceholder?.(main, message) || main ? 'Type your message here...' : 'Type your reply here...';
-  const isNestedReply = Boolean(parentMessage);
 
   /** effects */
   useEffect(() => {

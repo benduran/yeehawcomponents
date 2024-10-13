@@ -6,8 +6,8 @@ export const styles = {
    * that contains the <ConversationPit /> component
    */
   root: css`
-    display: flex;
-    flex-direction: column;
+    height: 100%;
     min-height: 0;
+    position: relative;
   `,
 };

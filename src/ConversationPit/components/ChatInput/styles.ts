@@ -1,6 +1,7 @@
 import { css } from '@emotion/css';
 
 import { borders, colors } from '../../../styles';
+import { heights } from '../../styles';
 
 export const styles = {
   /**
@@ -50,7 +51,6 @@ export const styles = {
     border-radius: ${borders.RADIUS};
     font-family: inherit;
     font-size: 1em;
-    height: 6em;
     outline: none;
     padding: 0.5em;
     resize: none;
@@ -67,8 +67,23 @@ export const styles = {
    * that contains the <textarea /> and its control buttons
    */
   root: css`
-    margin-top: 1em;
+    display: grid;
+    gap: 0.5em;
+    grid-template-rows: 1fr max-content;
+    height: ${heights.TEXTAREA_HEIGHT};
     padding: 0;
     position: relative;
+  `,
+
+  /**
+   * Class name applied to only the main chat input box
+   * that is docked to the bottom of the ConversationPit component
+   */
+  mainChatInput: css`
+    bottom: 0;
+    left: 0;
+    margin-top: 0;
+    position: absolute;
+    right: 0;
   `,
 };

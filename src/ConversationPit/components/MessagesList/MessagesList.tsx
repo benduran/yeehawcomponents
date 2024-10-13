@@ -21,7 +21,7 @@ export function MessagesList({ className, depth, messages, parent }: MessagesLis
     classes?.messagesList,
     className,
     displayName,
-    hasParent && cx(styles.childRoot, classes?.childMessagesList),
+    !hasParent && cx(styles.mainRoot),
   );
 
   return (

@@ -1,5 +1,7 @@
 import { css } from '@emotion/css';
 
+import { heights } from '../../styles';
+
 export const styles = {
   /**
    * Class name applied to the <ul />
@@ -8,7 +10,7 @@ export const styles = {
    */
   root: css`
     list-style: none;
-    margin: 0;
+    margin-top: 1em;
     padding: 0;
 
     & > li {
@@ -20,12 +22,15 @@ export const styles = {
     }
   `,
 
-  /**
-   * Class name applied to a messages list that has a parent.
-   * This list is considered part of a thread, and is rendered to
-   * be displayed as such.
-   */
-  childRoot: css`
-    margin-top: 1em;
+  /** Class name applied to only the main, outer-most messages list */
+  mainRoot: css`
+    left: 0;
+    bottom: ${heights.TEXTAREA_HEIGHT};
+    margin: 1em 0 0 0;
+    max-height: calc(100% - ${heights.TEXTAREA_HEIGHT});
+    overflow-y: auto;
+    position: absolute;
+    right: 0;
+    -webkit-overflow-scrolling: touch;
   `,
 };

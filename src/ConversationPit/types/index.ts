@@ -108,12 +108,6 @@ export interface ConversationPitClasses {
    */
   chatInputButtons: string;
   /**
-   * Class name applied to a messages list that has a parent.
-   * This list is considered part of a thread, and is rendered to
-   * be displayed as such.
-   */
-  childMessagesList: string;
-  /**
    * Class name applied to the nested reply text box
    */
   replyChatInput: string;
