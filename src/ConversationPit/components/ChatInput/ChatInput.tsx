@@ -1,4 +1,4 @@
-import { ChangeEvent, KeyboardEvent, useCallback, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useCallback, useEffect, useRef, useState } from 'react';
 
 import { useEventCallback } from '../../../hooks';
 import { useConversationPitContext } from '../../context';
@@ -21,6 +21,9 @@ export function ChatInput({ className, main, message, parentMessage }: ChatInput
   /** state */
   const [text, setText] = useState(message?.message || '');
 
+  /** refs */
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
   /** styles */
   const rootClassName = cx(styles.root, classes?.chatInput, main && classes?.mainChatInput, className);
   const chatInputButtonsClassName = buttonsCx(styles.chatInputButtons, classes?.chatInputButtons);
@@ -42,12 +45,20 @@ export function ChatInput({ className, main, message, parentMessage }: ChatInput
     handleCloseReply();
   });
   const handleSendOnKeydown = useEventCallback((e: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && e.metaKey) handleSend();
+    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) handleSend();
   });
 
   /** local variables */
   const placeholder =
     getChatInputPlaceholder?.(main, message) || main ? 'Type your message here...' : 'Type your reply here...';
+  const isNestedReply = Boolean(parentMessage);
+
+  /** effects */
+  useEffect(() => {
+    if (!isNestedReply || !textareaRef.current) return;
+
+    textareaRef.current.focus();
+  }, [isNestedReply]);
 
   return (
     <div className={rootClassName}>
@@ -56,6 +67,7 @@ export function ChatInput({ className, main, message, parentMessage }: ChatInput
         onChange={handleChatInputChange}
         onKeyDown={handleSendOnKeydown}
         placeholder={placeholder}
+        ref={textareaRef}
         value={text}
       />
       <div className={chatInputButtonsClassName}>

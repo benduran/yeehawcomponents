@@ -50,6 +50,7 @@ export const styles = {
     border-radius: ${borders.RADIUS};
     font-family: inherit;
     font-size: 1em;
+    height: 6em;
     outline: none;
     padding: 0.5em;
     resize: none;

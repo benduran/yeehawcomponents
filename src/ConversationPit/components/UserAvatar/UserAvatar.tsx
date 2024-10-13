@@ -52,7 +52,9 @@ export function UserAvatar({ className, displayIndent, user }: UserAvatarProps) 
       {(!user.avatarUrl || !showImage) && (
         <div className={cx(styles.initials, styles.imageOrInitials, showImage && styles.hideInitials)}>{initials}</div>
       )}
-      {displayIndent && <div className={indentClassName} />}
+      {displayIndent && (
+        <div aria-label={`Expand or collapse chat message`} className={indentClassName} role='button' />
+      )}
     </div>
   );
 }

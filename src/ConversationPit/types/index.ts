@@ -178,6 +178,11 @@ export interface ConversationPitContextSelfProps {
   handleCloseReply: () => void;
 
   /**
+   * Fired when a user clicks on an indent guide to collapse a chat thread
+   */
+  handleIndentGuideClick: (parentMessage: ConversationPitMessage) => void;
+
+  /**
    * Opens the text reply box for a given message
    */
   handleOpenReply: (parentMessage: ConversationPitMessage) => void;

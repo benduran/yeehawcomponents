@@ -14,7 +14,12 @@ export function ConversationPitContext({ children, messages, ...props }: Convers
     (parentMessage: ConversationPitMessage) => setOpenedReplyMessageId(parentMessage.id),
     [],
   );
+
   const handleCloseReply = useCallback(() => setOpenedReplyMessageId(''), []);
+
+  const handleIndentGuideClick = useCallback((parentMessage: ConversationPitMessage) => {
+    alert(JSON.stringify(parentMessage));
+  }, []);
 
   /** memos */
 
@@ -35,12 +40,21 @@ export function ConversationPitContext({ children, messages, ...props }: Convers
     (): ConversationPitContextProps => ({
       ...props,
       handleCloseReply,
+      handleIndentGuideClick,
       handleOpenReply,
       messages,
       openedReplyMessageId,
       parentIdsToChildMessages,
     }),
-    [handleCloseReply, handleOpenReply, messages, openedReplyMessageId, parentIdsToChildMessages, props],
+    [
+      handleCloseReply,
+      handleIndentGuideClick,
+      handleOpenReply,
+      messages,
+      openedReplyMessageId,
+      parentIdsToChildMessages,
+      props,
+    ],
   );
 
   return <context.Provider value={providerVal}>{children}</context.Provider>;
