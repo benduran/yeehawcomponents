@@ -24,8 +24,6 @@ export interface MentionMatch {
   start: number;
 }
 
-const DEFAULT_STATE: MentionMatch = { end: -1, fullMention: '', mention: '', start: -1 };
-
 function charIsWhitespaceOrNewline(char: string) {
   return /\s/.test(char);
 }
@@ -39,7 +37,7 @@ export function useGetCursorPosition(
   mentionsTriggers: Nullish<string[]>,
 ) {
   /** state */
-  const [mention, setMention] = useState<MentionMatch>(DEFAULT_STATE);
+  const [mention, setMention] = useState<Nullish<MentionMatch>>(null);
 
   /** local variables */
   const triggersStr = JSON.stringify(mentionsTriggers ?? []);
@@ -75,7 +73,8 @@ export function useGetCursorPosition(
           // check if the next character to the left
           // is a whitespace
           const possibleWhitespaceChar = value.charAt(i - 1);
-          if (buffer && (!possibleWhitespaceChar || charIsWhitespaceOrNewline(possibleWhitespaceChar))) {
+          // if (buffer && (!possibleWhitespaceChar || charIsWhitespaceOrNewline(possibleWhitespaceChar))) {
+          if (!possibleWhitespaceChar || charIsWhitespaceOrNewline(possibleWhitespaceChar)) {
             // we are in a valid mention trigger condition
             return setMention({
               end: selectionStart,
@@ -88,7 +87,7 @@ export function useGetCursorPosition(
         buffer = `${char}${buffer}`;
       }
 
-      return setMention(DEFAULT_STATE);
+      return setMention(null);
     },
     [triggersSet],
   );

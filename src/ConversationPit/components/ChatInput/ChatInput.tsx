@@ -1,4 +1,4 @@
-import { ChangeEvent, KeyboardEvent, useCallback, useEffect, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useCallback, useEffect, useRef, useState } from 'react';
 
 import { useEventCallback } from '../../../hooks';
 import { Nullish } from '../../../types';
@@ -12,8 +12,11 @@ import { styles } from './styles';
  */
 export function ChatInput({ className, main, message, parentMessage }: ChatInputProps) {
   /** context */
-  const { classes, currentUser, getChatInputPlaceholder, handleCloseReply, mentionTriggers, onSend } =
+  const { classes, currentUser, fetchMentions, getChatInputPlaceholder, handleCloseReply, mentionTriggers, onSend } =
     useConversationPitContext();
+
+  /** ref */
+  const fetchMentionsRef = useRef(fetchMentions);
 
   /** state */
   const [text, setText] = useState(message?.message || '');
@@ -62,10 +65,29 @@ export function ChatInput({ className, main, message, parentMessage }: ChatInput
 
   /** effects */
   useEffect(() => {
+    fetchMentionsRef.current = fetchMentions;
+  });
+
+  useEffect(() => {
     if (!isNestedReply || !textareaRef) return;
 
     textareaRef.focus();
   }, [isNestedReply, textareaRef]);
+
+  console.info('mention', mention);
+
+  useEffect(() => {
+    if (!mention) return;
+
+    const doPerformFetch = async () => {
+      if (!fetchMentionsRef.current) return;
+      const mentionsResult = await fetchMentionsRef.current(mention.mention);
+
+      console.info('mentionsResult', mentionsResult);
+    };
+
+    doPerformFetch();
+  }, [fetchMentions, mention]);
 
   return (
     <div className={rootClassName}>

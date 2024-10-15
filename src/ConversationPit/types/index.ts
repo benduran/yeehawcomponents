@@ -227,6 +227,12 @@ export interface ConversationPitProps
   currentUser: ConversationPitUser;
 
   /**
+   * If provided, this will enable <ConversationPit />
+   * to respond to @mention type behavior.
+   */
+  fetchMentions?: (mentionQuery: string) => Promise<ConversationPitUser[]>;
+
+  /**
    * Called on each <ChatInput /> render to determine the placeholder
    * message to show to a user.
    * If no function is provided, a default message will be displayed instead

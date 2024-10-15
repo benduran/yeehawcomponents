@@ -1,5 +1,7 @@
 import { css } from '@emotion/css';
 
+import { colors } from '../../../styles';
+
 export const styles = {
   componentDocRoot: css`
     height: 100%;
@@ -13,7 +15,28 @@ export const styles = {
   `,
 
   componentExampleRoot: css`
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
     position: relative;
+
+    &:after {
+      background-color: ${colors.COLOR_GRAY};
+      bottom: 0;
+      content: '';
+      display: block;
+      height: 4px;
+      left: 0;
+      position: absolute;
+      right: 0;
+    }
+
+    &:last-of-type {
+      margin-bottom: 0;
+
+      &:after {
+        display: none;
+      }
+    }
   `,
 
   componentExampleName: css`

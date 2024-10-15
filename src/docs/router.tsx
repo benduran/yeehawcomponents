@@ -2,7 +2,12 @@ import type { FC } from 'react';
 import { Route, Switch } from 'wouter';
 
 import { ComponentDoc } from './components';
-import { BasicConversationPitExample, BasicConversationPitExampleSnippet } from './examples';
+import {
+  BasicConversationPitExample,
+  BasicConversationPitExampleSnippet,
+  MentionsConversationPitExample,
+  MentionsPitExampleSnippet,
+} from './examples';
 import { DocsLayout } from './layouts';
 import { docsRoutes } from './routes';
 
@@ -20,6 +25,14 @@ export const DocsRouter: FC = () => (
               name='Basic example'
             >
               <BasicConversationPitExample />
+            </ComponentDoc.ComponentExample>,
+            <ComponentDoc.ComponentExample
+              code={MentionsPitExampleSnippet}
+              description='Want to allow users to @mention others users? Check out this example.'
+              key='slack-style-mentions'
+              name='Slack-style @mentions'
+            >
+              <MentionsConversationPitExample />
             </ComponentDoc.ComponentExample>,
           ]}
         />

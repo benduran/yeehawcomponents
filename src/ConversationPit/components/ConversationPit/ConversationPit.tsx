@@ -9,12 +9,18 @@ import { styles } from './styles';
 
 const displayName = 'ConversationPit';
 export const ConversationPit = forwardRef<HTMLDivElement, ConversationPitProps>(
-  ({ className, classes, currentUser, onSend, messages, ...rest }, ref) => {
+  ({ className, classes, currentUser, fetchMentions, onSend, messages, ...rest }, ref) => {
     /** hooks */
     const cx = useMakeConversationPitCx('Root');
 
     return (
-      <ConversationPitContext classes={classes} currentUser={currentUser} messages={messages} onSend={onSend}>
+      <ConversationPitContext
+        classes={classes}
+        currentUser={currentUser}
+        fetchMentions={fetchMentions}
+        messages={messages}
+        onSend={onSend}
+      >
         <div {...rest} className={cx(styles.root, displayName, className, classes?.root)} ref={ref}>
           <MessagesList depth={0} messages={messages} />
           <ChatInput main parentMessage={null} />
