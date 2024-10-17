@@ -4,7 +4,8 @@ import { useEventCallback } from '../../../hooks';
 import { Nullish } from '../../../types';
 import { useConversationPitContext } from '../../context';
 import { useGetCursorPosition, useMakeConversationPitCx } from '../../hooks';
-import { ChatInputProps } from '../../types';
+import { ChatInputProps, ConversationPitUser } from '../../types';
+import { MentionsSuggestions } from '../MentionsSuggestions';
 import { styles } from './styles';
 
 /**
@@ -21,6 +22,7 @@ export function ChatInput({ className, main, message, parentMessage }: ChatInput
   /** state */
   const [text, setText] = useState(message?.message || '');
   const [textareaRef, setTextareaRef] = useState<Nullish<HTMLTextAreaElement>>(null);
+  const [mentionsSuggestions, setMentionsSuggestions] = useState<ConversationPitUser[]>([]);
 
   /** hooks */
   const cx = useMakeConversationPitCx('ChatInput');
@@ -74,8 +76,6 @@ export function ChatInput({ className, main, message, parentMessage }: ChatInput
     textareaRef.focus();
   }, [isNestedReply, textareaRef]);
 
-  console.info('mention', mention);
-
   useEffect(() => {
     if (!mention) return;
 
@@ -83,7 +83,7 @@ export function ChatInput({ className, main, message, parentMessage }: ChatInput
       if (!fetchMentionsRef.current) return;
       const mentionsResult = await fetchMentionsRef.current(mention.mention);
 
-      console.info('mentionsResult', mentionsResult);
+      setMentionsSuggestions(mentionsResult);
     };
 
     doPerformFetch();
@@ -91,6 +91,7 @@ export function ChatInput({ className, main, message, parentMessage }: ChatInput
 
   return (
     <div className={rootClassName}>
+      <MentionsSuggestions mentionsSuggestions={mentionsSuggestions} />
       <textarea
         className={cx(styles.textarea, classes?.textarea)}
         onChange={handleChatInputChange}

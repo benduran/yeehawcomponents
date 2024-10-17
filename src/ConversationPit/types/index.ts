@@ -138,6 +138,11 @@ export interface ConversationPitClasses {
    */
   messageDetails: string;
   /**
+   * Class name applied to the auto suggestions list
+   * that is displayed when a user tried to @ mention somebody
+   */
+  mentions: string;
+  /**
    * Class name applied to the actual sent message text
    */
   messageText: string;

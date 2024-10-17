@@ -102,6 +102,9 @@ export function MentionsConversationPitExample() {
 
         mentionsTimeout.current = setTimeout(() => {
           if (!mentionQuery) return resolve(possibleUsers);
+          const lowerQuery = mentionQuery.toLowerCase();
+
+          return resolve(possibleUsers.filter(u => u.fullName.toLowerCase().includes(lowerQuery)));
         }, 200);
       }),
     [],
