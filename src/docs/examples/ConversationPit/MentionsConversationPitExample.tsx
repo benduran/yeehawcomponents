@@ -116,7 +116,7 @@ export function MentionsConversationPitExample() {
         currentUser={currentUser}
         fetchMentions={handleFetchMentions}
         messages={messages}
-        onSend={(user, message, mentions, parentMessage) =>
+        onSend={(user, message, mentions, parentMessage) => {
           setMessages(prev => [
             ...prev,
             {
@@ -125,9 +125,10 @@ export function MentionsConversationPitExample() {
               id: performance.now().toString(),
               message,
               parentId: parentMessage?.id,
+              mentions,
             },
-          ])
-        }
+          ]);
+        }}
       />
     </div>
   );

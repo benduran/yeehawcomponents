@@ -4,7 +4,7 @@ import { useEventCallback } from '../../../hooks';
 import { Nullish } from '../../../types';
 import { useConversationPitContext } from '../../context';
 import { useGetCursorPosition, useMakeConversationPitCx } from '../../hooks';
-import { ChatInputProps, ConversationPitUser } from '../../types';
+import { ChatInputProps, ConversationPitMention, ConversationPitUser } from '../../types';
 import { MentionsSuggestions } from '../MentionsSuggestions';
 import { styles } from './styles';
 
@@ -13,8 +13,16 @@ import { styles } from './styles';
  */
 export function ChatInput({ className, main, message, parentMessage }: ChatInputProps) {
   /** context */
-  const { classes, currentUser, fetchMentions, getChatInputPlaceholder, handleCloseReply, mentionTriggers, onSend } =
-    useConversationPitContext();
+  const {
+    classes,
+    currentUser,
+    fetchMentions,
+    formatMentionText,
+    getChatInputPlaceholder,
+    handleCloseReply,
+    mentionTriggers,
+    onSend,
+  } = useConversationPitContext();
 
   /** ref */
   const fetchMentionsRef = useRef(fetchMentions);
@@ -25,7 +33,7 @@ export function ChatInput({ className, main, message, parentMessage }: ChatInput
   const [isFocused, setIsFocused] = useState(false);
   const [textareaRef, setTextareaRef] = useState<Nullish<HTMLTextAreaElement>>(null);
   const [mentionsSuggestions, setMentionsSuggestions] = useState<ConversationPitUser[]>([]);
-  const [mentionedUsers, setMentionedUsers] = useState<ConversationPitUser[]>([]);
+  const [messageMentions, setMessageMentions] = useState<ConversationPitMention[]>([]);
 
   /** hooks */
   const cx = useMakeConversationPitCx('ChatInput');
@@ -56,7 +64,7 @@ export function ChatInput({ className, main, message, parentMessage }: ChatInput
   );
   const handleSend = useEventCallback(() => {
     // TODO: get the mentions from someplace?
-    onSend(currentUser, text, mentionedUsers, parentMessage);
+    onSend(currentUser, text, messageMentions, parentMessage);
     setText('');
     handleCloseReply();
   });
@@ -92,8 +100,19 @@ export function ChatInput({ className, main, message, parentMessage }: ChatInput
     (mentionedUser: ConversationPitUser) => {
       if (!mention?.fullMention) return;
 
-      setText(prev => `${prev.substring(0, mention.start)}+${mentionedUser.fullName}${prev.substring(mention.end)}`);
-      setMentionedUsers(prev => Array.from(new Map([...prev, mentionedUser].map(u => [u.email, u])).values()));
+      const formattedMention = formatMentionText?.(mentionedUser) ?? `+${mentionedUser.fullName}`;
+
+      setText(prev => `${prev.substring(0, mention.start)}${formattedMention}${prev.substring(mention.end)}`);
+      setMessageMentions(prev => {
+        const deduped = new Map<string, ConversationPitMention>();
+
+        for (const p of prev) {
+          deduped.set(p.injectedMentionText, p);
+        }
+        deduped.set(formattedMention, { injectedMentionText: formattedMention, user: mentionedUser });
+
+        return Array.from(deduped.values());
+      });
       // now we need to set the cursor position to be at the end of the injected words
 
       const delta = mentionedUser.fullName.length - mention.fullMention.length;
@@ -101,7 +120,7 @@ export function ChatInput({ className, main, message, parentMessage }: ChatInput
 
       setInputCursorPos(newCursorPos);
     },
-    [mention?.end, mention?.fullMention, mention?.start, setInputCursorPos],
+    [formatMentionText, mention?.end, mention?.fullMention, mention?.start, setInputCursorPos],
   );
 
   /** effects */

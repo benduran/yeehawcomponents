@@ -21,6 +21,19 @@ export interface ConversationPitUser {
   fullName: string;
 }
 
+export interface ConversationPitMention {
+  /**
+   * The actual text that was injected into the message text
+   * when the mention happened
+   */
+  injectedMentionText: string;
+
+  /**
+   * User that was mentioned
+   */
+  user: ConversationPitUser;
+}
+
 export interface ConversationPitMessage {
   /**
    * Person that authored this particular message
@@ -42,7 +55,7 @@ export interface ConversationPitMessage {
    * email addresses or other form of contacting
    * a person
    */
-  mentions?: Record<string, string>;
+  mentions?: ConversationPitMention[];
 
   /**
    * Contents of the message
@@ -238,6 +251,14 @@ export interface ConversationPitProps
   fetchMentions?: (mentionQuery: string) => Promise<ConversationPitUser[]>;
 
   /**
+   * If provided, allows you to customize the text that is injected / replaced
+   * when a user is successfully mentioned
+   *
+   * @default (mentionedUser) => `+${mentionedUser.fullName}`
+   */
+  formatMentionText?: (mentionedUser: ConversationPitUser) => string;
+
+  /**
    * Called on each <ChatInput /> render to determine the placeholder
    * message to show to a user.
    * If no function is provided, a default message will be displayed instead
@@ -270,7 +291,7 @@ export interface ConversationPitProps
   onSend: (
     sendingUser: ConversationPitUser,
     message: string,
-    mentions: ConversationPitUser[],
+    mentions: ConversationPitMention[],
     parentMessage: Nullish<ConversationPitMessage>,
   ) => void;
 }

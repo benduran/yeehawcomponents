@@ -1,3 +1,5 @@
+import { ReactNode, useMemo } from 'react';
+
 import { Dates } from '../../../util';
 import { useConversationPitContext } from '../../context';
 import { useMakeConversationPitCx } from '../../hooks';
@@ -32,6 +34,20 @@ export function Message({ depth, message }: MessageProps) {
   /** hooks */
   const cx = useMakeConversationPitCx('Message');
   const childCx = useMakeConversationPitCx('ChildMessages');
+
+  /** memos */
+  const mentionedReplacedMessage = useMemo((): ReactNode | ReactNode[] => {
+    if (!message.mentions) return message.message;
+
+    const out: ReactNode[] = [];
+
+    for (const mention of message.mentions) {
+      // TODO: Need to find ALL the spots in the string that match the mentioned text
+      // and replace them with <a /> link tags.
+    }
+
+    return out;
+  }, [message.mentions, message.message]);
 
   /** local variables */
   const isReplyOpened = openedReplyMessageId === message.id;
