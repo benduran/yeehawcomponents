@@ -13,13 +13,20 @@ interface MentionsSuggestionsProps {
   mentionsSuggestions: ConversationPitUser[];
 
   /**
+   * Fired when a user makes a mention selection.
+   * It is up to the textbox to determine how to inject
+   * the replacement text
+   */
+  onMentionSelected: (mentionedUser: ConversationPitUser) => void;
+
+  /**
    * Reference to the <textarea /> element that is triggering
    * these mentions
    */
   textareaRef: Nullish<HTMLTextAreaElement>;
 }
 
-export function MentionsSuggestions({ mentionsSuggestions, textareaRef }: MentionsSuggestionsProps) {
+export function MentionsSuggestions({ mentionsSuggestions, onMentionSelected, textareaRef }: MentionsSuggestionsProps) {
   /** context */
   const { classes: classesOverrides } = useConversationPitContext();
 
@@ -49,8 +56,17 @@ export function MentionsSuggestions({ mentionsSuggestions, textareaRef }: Mentio
         e.preventDefault();
         return setActiveIndex(prev => (prev === mentionsSuggestions.length - 1 ? 0 : prev + 1));
       }
+
+      if (e.key === 'Enter') {
+        const mentionedUser = mentionsSuggestions.at(activeIndex);
+        if (mentionedUser) {
+          e.stopPropagation();
+          e.preventDefault();
+          return onMentionSelected(mentionedUser);
+        }
+      }
     },
-    [hasMentions, mentionsSuggestions.length],
+    [activeIndex, hasMentions, mentionsSuggestions, onMentionSelected],
   );
 
   /** effects */

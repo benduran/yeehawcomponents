@@ -270,7 +270,7 @@ export interface ConversationPitProps
   onSend: (
     sendingUser: ConversationPitUser,
     message: string,
-    mentions: string[],
+    mentions: ConversationPitUser[],
     parentMessage: Nullish<ConversationPitMessage>,
   ) => void;
 }

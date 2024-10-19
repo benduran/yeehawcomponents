@@ -18,12 +18,14 @@ export function ChatInput({ className, main, message, parentMessage }: ChatInput
 
   /** ref */
   const fetchMentionsRef = useRef(fetchMentions);
+  const updateCursorPosRef = useRef<NodeJS.Timeout | void>();
 
   /** state */
   const [text, setText] = useState(message?.message || '');
   const [isFocused, setIsFocused] = useState(false);
   const [textareaRef, setTextareaRef] = useState<Nullish<HTMLTextAreaElement>>(null);
   const [mentionsSuggestions, setMentionsSuggestions] = useState<ConversationPitUser[]>([]);
+  const [mentionedUsers, setMentionedUsers] = useState<ConversationPitUser[]>([]);
 
   /** hooks */
   const cx = useMakeConversationPitCx('ChatInput');
@@ -54,18 +56,53 @@ export function ChatInput({ className, main, message, parentMessage }: ChatInput
   );
   const handleSend = useEventCallback(() => {
     // TODO: get the mentions from someplace?
-    onSend(currentUser, text, [], parentMessage);
+    onSend(currentUser, text, mentionedUsers, parentMessage);
     setText('');
     handleCloseReply();
   });
+
   const handleCancel = useEventCallback(() => {
     setText('');
     handleCloseReply();
   });
+
   const handleSendOnKeydown = useEventCallback((e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) return handleSend();
     // otherwise, we check if there are arrow keys and transition the mentions active selection
   });
+
+  const setInputCursorPos = useCallback(
+    (cursorPos: number) => {
+      if (updateCursorPosRef.current) {
+        updateCursorPosRef.current = clearTimeout(updateCursorPosRef.current);
+      }
+
+      updateCursorPosRef.current = setTimeout(() => {
+        if (!textareaRef) return;
+
+        if (typeof textareaRef.setSelectionRange === 'function') {
+          return textareaRef.setSelectionRange(cursorPos, cursorPos, 'none');
+        }
+      }, 10);
+    },
+    [textareaRef],
+  );
+
+  const handleMentionUser = useCallback(
+    (mentionedUser: ConversationPitUser) => {
+      if (!mention?.fullMention) return;
+
+      setText(prev => `${prev.substring(0, mention.start)}+${mentionedUser.fullName}${prev.substring(mention.end)}`);
+      setMentionedUsers(prev => Array.from(new Map([...prev, mentionedUser].map(u => [u.email, u])).values()));
+      // now we need to set the cursor position to be at the end of the injected words
+
+      const delta = mentionedUser.fullName.length - mention.fullMention.length;
+      const newCursorPos = mention.end + delta + 1;
+
+      setInputCursorPos(newCursorPos);
+    },
+    [mention?.end, mention?.fullMention, mention?.start, setInputCursorPos],
+  );
 
   /** effects */
   useEffect(() => {
@@ -94,7 +131,11 @@ export function ChatInput({ className, main, message, parentMessage }: ChatInput
   return (
     <div className={rootClassName}>
       {isFocused && Boolean(mention?.fullMention.length) && (
-        <MentionsSuggestions mentionsSuggestions={mentionsSuggestions} textareaRef={textareaRef} />
+        <MentionsSuggestions
+          mentionsSuggestions={mentionsSuggestions}
+          onMentionSelected={handleMentionUser}
+          textareaRef={textareaRef}
+        />
       )}
       <textarea
         className={cx(styles.textarea, classes?.textarea)}
