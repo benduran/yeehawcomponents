@@ -2,7 +2,46 @@ import { css } from '@emotion/css';
 
 import { colors } from '../../../styles';
 
+const selected = `
+  background-color: ${colors.COLOR_BLUE};
+  color: ${colors.COLOR_WHITE};
+`;
+
 export const styles = {
+  /**
+   * Class name applied to the <ul /> that holds all of the mentions
+   */
+  mentionsList: css`
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  `,
+
+  /**
+   * Class name applied to each individual, selectable mention
+   */
+  mention: css`
+    background-color: ${colors.COLOR_WHITE};
+    font-size: 1em;
+    padding: 0.5em;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
+
+    &:hover {
+      ${selected}
+      cursor: pointer;
+    }
+  `,
+
+  /**
+   * Class name applied when a specific mention is selected by the user
+   * (typically from a keyboard UP or DOWN press)
+   */
+  mentionSelected: css`
+    ${selected}
+  `,
+
   /**
    * Class name applied to the mentions suggestions list
    */
@@ -13,17 +52,5 @@ export const styles = {
     left: 0;
     position: absolute;
     right: 0;
-
-    & > ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-
-      & > li {
-        background-color: ${colors.COLOR_WHITE};
-        font-size: 1em;
-        padding: 0.5em;
-      }
-    }
   `,
 };

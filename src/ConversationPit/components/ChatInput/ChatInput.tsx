@@ -21,6 +21,7 @@ export function ChatInput({ className, main, message, parentMessage }: ChatInput
 
   /** state */
   const [text, setText] = useState(message?.message || '');
+  const [isFocused, setIsFocused] = useState(false);
   const [textareaRef, setTextareaRef] = useState<Nullish<HTMLTextAreaElement>>(null);
   const [mentionsSuggestions, setMentionsSuggestions] = useState<ConversationPitUser[]>([]);
 
@@ -62,7 +63,8 @@ export function ChatInput({ className, main, message, parentMessage }: ChatInput
     handleCloseReply();
   });
   const handleSendOnKeydown = useEventCallback((e: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) handleSend();
+    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) return handleSend();
+    // otherwise, we check if there are arrow keys and transition the mentions active selection
   });
 
   /** effects */
@@ -91,10 +93,14 @@ export function ChatInput({ className, main, message, parentMessage }: ChatInput
 
   return (
     <div className={rootClassName}>
-      <MentionsSuggestions mentionsSuggestions={mentionsSuggestions} />
+      {isFocused && Boolean(mention?.fullMention.length) && (
+        <MentionsSuggestions mentionsSuggestions={mentionsSuggestions} textareaRef={textareaRef} />
+      )}
       <textarea
         className={cx(styles.textarea, classes?.textarea)}
         onChange={handleChatInputChange}
+        onBlur={() => setIsFocused(false)}
+        onFocus={() => setIsFocused(true)}
         onKeyDown={handleSendOnKeydown}
         placeholder={placeholder}
         ref={setTextareaRef}

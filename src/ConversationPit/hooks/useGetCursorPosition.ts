@@ -91,15 +91,23 @@ export function useGetCursorPosition(
     },
     [triggersSet],
   );
+  const handleBlur = useCallback(() => {
+    // clear the mention whenever a user loses focus on this input
+    setMention(null);
+  }, []);
 
   /** effects */
   useEffect(() => {
     if (!inputOrTextarea) return;
 
     inputOrTextarea.addEventListener('keyup', handleKeyup);
+    inputOrTextarea.addEventListener('blur', handleBlur);
 
-    return () => inputOrTextarea.removeEventListener('keyup', handleKeyup);
-  }, [handleKeyup, inputOrTextarea, triggersSet]);
+    return () => {
+      inputOrTextarea.removeEventListener('keyup', handleKeyup);
+      inputOrTextarea.removeEventListener('focus', handleBlur);
+    };
+  }, [handleBlur, handleKeyup, inputOrTextarea, triggersSet]);
 
   return mention;
 }

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { Nullish } from '../../../types';
 import { useConversationPitContext } from '../../context';
@@ -11,29 +11,79 @@ interface MentionsSuggestionsProps {
    * current suggestions returned by the user's mention query function
    */
   mentionsSuggestions: ConversationPitUser[];
+
+  /**
+   * Reference to the <textarea /> element that is triggering
+   * these mentions
+   */
+  textareaRef: Nullish<HTMLTextAreaElement>;
 }
 
-export function MentionsSuggestions({ mentionsSuggestions }: MentionsSuggestionsProps) {
+export function MentionsSuggestions({ mentionsSuggestions, textareaRef }: MentionsSuggestionsProps) {
   /** context */
   const { classes: classesOverrides } = useConversationPitContext();
 
+  /** local variables */
+  const hasMentions = mentionsSuggestions.length > 0;
+
   /** state */
-  const [active, setActive] = useState<Nullish<ConversationPitUser>>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   /** styles */
   const cx = useMakeConversationPitCx('MentionsSuggestions');
   const rootClassName = cx(styles.root, classesOverrides?.mentions);
 
+  /** callbacks */
+  const handleTextareaKeydown = useCallback(
+    (e: KeyboardEvent) => {
+      if (!hasMentions) return;
+
+      // change the active item, up or down, based on the user's pressed key
+      if (e.key === 'ArrowUp') {
+        e.stopPropagation();
+        e.preventDefault();
+        return setActiveIndex(prev => (!prev ? mentionsSuggestions.length - 1 : prev - 1));
+      }
+      if (e.key === 'ArrowDown') {
+        e.stopPropagation();
+        e.preventDefault();
+        return setActiveIndex(prev => (prev === mentionsSuggestions.length - 1 ? 0 : prev + 1));
+      }
+    },
+    [hasMentions, mentionsSuggestions.length],
+  );
+
+  /** effects */
+  useEffect(() => {
+    if (!textareaRef) return;
+
+    textareaRef.addEventListener('keydown', handleTextareaKeydown);
+
+    return () => {
+      textareaRef.removeEventListener('keydown', handleTextareaKeydown);
+    };
+  }, [handleTextareaKeydown, textareaRef]);
+
   if (!mentionsSuggestions.length) return null;
 
   return (
     <div className={rootClassName} role='presentation'>
-      <ul role='listbox'>
-        {mentionsSuggestions.map(u => (
-          <li aria-selected key={u.email} role='option' tabIndex={-1}>
-            {u.fullName}
-          </li>
-        ))}
+      <ul className={cx(styles.mentionsList)} role='listbox'>
+        {mentionsSuggestions.map((u, i) => {
+          const selected = activeIndex === i;
+
+          return (
+            <li
+              aria-selected={selected}
+              className={cx(styles.mention, selected && styles.mentionSelected)}
+              key={u.email}
+              role='option'
+              tabIndex={-1}
+            >
+              {u.fullName}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

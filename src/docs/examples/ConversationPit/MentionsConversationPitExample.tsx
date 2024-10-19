@@ -94,7 +94,7 @@ export function MentionsConversationPitExample() {
             email: 'smith@agents.net',
             fullName: 'Agent Smith',
           },
-        ];
+        ].sort((a, b) => a.fullName.localeCompare(b.fullName));
 
         if (mentionsTimeout.current) {
           mentionsTimeout.current = clearTimeout(mentionsTimeout.current);
