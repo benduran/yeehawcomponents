@@ -1,4 +1,4 @@
-import { ReactNode, useMemo } from 'react';
+import { useMemo } from 'react';
 
 import { Dates } from '../../../util';
 import { useConversationPitContext } from '../../context';
@@ -36,14 +36,15 @@ export function Message({ depth, message }: MessageProps) {
   const childCx = useMakeConversationPitCx('ChildMessages');
 
   /** memos */
-  const mentionedReplacedMessage = useMemo((): ReactNode | ReactNode[] => {
+  const mentionedReplacedMessage = useMemo(() => {
     if (!message.mentions) return message.message;
 
-    const out: ReactNode[] = [];
-
+    let out = message.message;
     for (const mention of message.mentions) {
-      // TODO: Need to find ALL the spots in the string that match the mentioned text
-      // and replace them with <a /> link tags.
+      out = out.replaceAll(
+        mention.injectedMentionText,
+        `<a href="mailto:${mention.user.email}" target="_blank">${mention.injectedMentionText}</a>`,
+      );
     }
 
     return out;
@@ -78,7 +79,7 @@ export function Message({ depth, message }: MessageProps) {
         <div className={usernameClassname}>
           <div>{message.author.fullName}</div>
         </div>
-        <div className={messageTextClassName}>{message.message}</div>
+        <div className={messageTextClassName} dangerouslySetInnerHTML={{ __html: mentionedReplacedMessage }} />
         <div className={messageActionsClassName}>
           <div className={messageDateClassName}>
             {Dates.relativeFromNow(message.updatedDate ?? message.createDate)}
